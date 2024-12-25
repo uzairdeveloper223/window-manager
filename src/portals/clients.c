@@ -37,17 +37,5 @@ HANDLE(MapRequest)
     Window client_window = _event->window;
 
     XSelectInput(display, client_window, client_event_mask);
-
-    add_to_ewmh_client_list(display, root_window, client_window);
 }
 
-HANDLE(DestroyNotify)
-{
-    XDestroyWindowEvent *_event = &event->xdestroywindow;
-
-    // Considering a DestroyNotify event can only be sent by clients, we can
-    // safely assume that the window is a client window.
-    Window client_window = _event->window;
-
-    remove_from_ewmh_client_list(display, root_window, client_window);
-}
