@@ -38,13 +38,11 @@ HANDLE(PropertyNotify)
     Atom wm_name = XInternAtom(display, "WM_NAME", False);
     if (_event->atom == wm_name || _event->atom == net_wm_name)
     {
-        char *title = malloc(256);
-        x_get_window_name(display, portal->client_window, title, 256);
-        if(title != NULL)
+        char title[256];
+        if(x_get_window_name(display, portal->client_window, title, sizeof(title)) == 0)
         {
             set_portal_title(portal, title);
             draw_portal_frame(portal);
-            free(title);
         }
     }
 }

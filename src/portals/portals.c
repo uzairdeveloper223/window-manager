@@ -107,8 +107,8 @@ Portal *create_portal(Display *display, Window client_window)
     XResizeWindow(display, client_window, portal_width, portal_height - PORTAL_TITLE_BAR_HEIGHT);
 
     // Get the client window name.
-    char *title = malloc(256);
-    x_get_window_name(display, client_window, title, 256);
+    char title[256];
+    x_get_window_name(display, client_window, title, sizeof(title));
 
     // Register the portal and create the frame.
     Portal *portal = register_portal(
@@ -128,9 +128,6 @@ Portal *create_portal(Display *display, Window client_window)
     XReparentWindow(display, client_window, frame_window, 0, PORTAL_TITLE_BAR_HEIGHT);
     XMapWindow(display, frame_window);
     XMapWindow(display, client_window);
-
-    // Cleanup.
-    free(title);
 
     return portal;
 }

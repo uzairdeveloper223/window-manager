@@ -11,8 +11,7 @@
  * 
  * @param display The display where the window is located.
  * @param window The window to retrieve the name for.
- * @param out_name The buffer where the name will be stored. Memory for it must
- * be allocated by the caller beforehand.
+ * @param out_name The buffer where the name will be stored.
  * @param name_size The size of the `out_name` buffer.
  * 
  * @return 0 on success, non-zero integer otherwise.
