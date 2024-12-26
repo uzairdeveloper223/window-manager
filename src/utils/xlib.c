@@ -40,8 +40,22 @@ int x_get_window_name(Display *display, Window window, char *out_name, size_t na
 }
 
 int x_error_handler(Display *display, XErrorEvent *error) {
-    char error_text[1024];
-    XGetErrorText(display, error->error_code, error_text, sizeof(error_text));
-    LOG_ERROR(error_text);
+    if (
+        // Ignore BadWindow, BadDrawable and BadPixmap errors since they commonly
+        // occur, even under normal operation. All other X errors are logged as
+        // they typically indicate real issues.
+        error->error_code != BadWindow &&
+        error->error_code != BadDrawable &&
+        error->error_code != BadPixmap
+    )
+    {
+        char error_text[1024];
+        XGetErrorText(display, error->error_code, error_text, sizeof(error_text));
+        
+        LOG_ERROR(
+            "%s (request: %d, resource: 0x%lx)", 
+            error_text, error->request_code, error->resourceid
+        );
+    }
     return 0;
 }
