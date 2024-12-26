@@ -55,29 +55,28 @@ void setup_ewmh_identification_chain(Display *display, Window root_window)
 
 void setup_ewmh_supported_list(Display *display, Window root_window)
 {
-    Atom net_supported = XInternAtom(display, "_NET_SUPPORTED", False);
-    Atom net_supporting_wm_check = XInternAtom(display, "_NET_SUPPORTING_WM_CHECK", False);
-    Atom net_wm_name = XInternAtom(display, "_NET_WM_NAME", False);
-    Atom net_client_list = XInternAtom(display, "_NET_CLIENT_LIST", False);
-
     // Define a list of supported EWMH features.
-    const int supported_feature_count = 3;
-    Atom supported_features[] = {
-        net_supporting_wm_check,
-        net_wm_name,
-        net_client_list
+    Atom features[] = {
+        XInternAtom(display, "_NET_SUPPORTING_WM_CHECK", False),
+        XInternAtom(display, "_NET_WM_NAME", False),
+        XInternAtom(display, "_NET_CLIENT_LIST", False),
+        XInternAtom(display, "_NET_WM_ACTION_MOVE", False),
+        XInternAtom(display, "_NET_WM_ACTION_RESIZE", False),
+        XInternAtom(display, "_NET_WM_MOVERESIZE", False),
+        XInternAtom(display, "_NET_MOVERESIZE_WINDOW", False)
     };
 
     // Set the _NET_SUPPORTED property on the root window, listing all the
     // EWMH features that our window manager supports.
+    Atom net_supported = XInternAtom(display, "_NET_SUPPORTED", False);
     XChangeProperty(
-        display,                                // Display
-        root_window,                            // Window
-        net_supported,                          // Property
-        XA_ATOM,                                // Type
-        32,                                     // Format (32-bit)
-        PropModeReplace,                        // Mode
-        (unsigned char *)supported_features,    // Property Data
-        supported_feature_count                 // Element Count
+        display,                            // Display
+        root_window,                        // Window
+        net_supported,                      // Property
+        XA_ATOM,                            // Type
+        32,                                 // Format (32-bit)
+        PropModeReplace,                    // Mode
+        (unsigned char *)features,          // Property Data
+        sizeof(features) / sizeof(Atom)     // Element Count
     );
 }
