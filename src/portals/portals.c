@@ -172,6 +172,7 @@ HANDLE(MapRequest)
     // safely assume that the window is a client window.
     Window client_window = _event->window;
 
+    // Make sure the client window does not already belong to a portal.
     Portal *portal = find_portal(client_window);
     if (portal != NULL) return;
 
@@ -182,11 +183,9 @@ HANDLE(DestroyNotify)
 {
     XDestroyWindowEvent *_event = &event->xdestroywindow;
 
-    // Considering a DestroyNotify event can only be sent by clients, we can
-    // safely assume that the window is a client window.
-    Window client_window = _event->window;
-
-    Portal *portal = find_portal(client_window);
+    // The source of a DestroyNotify event is not guaranteed to be a portal
+    // related window, so we must check whether it is or not before proceeding.
+    Portal *portal = find_portal(_event->window);
     if (portal == NULL) return;
 
     destroy_portal(portal);

@@ -6,7 +6,6 @@ static size_t client_capacity = 0;
 
 static void publish_ewmh_client_list(Display *display, Window root_window) {
     Atom net_client_list = XInternAtom(display, "_NET_CLIENT_LIST", False);
-    
     XChangeProperty(
         display,
         root_window,
@@ -24,7 +23,6 @@ static void add_to_ewmh_client_list(Window window) {
         client_capacity = (client_capacity == 0) ? 16 : client_capacity * 2;
         client_list = realloc(client_list, client_capacity * sizeof(Window));
     }
-    
     client_list[client_count++] = window;
 }
 
@@ -55,20 +53,21 @@ HANDLE(MapRequest)
     // safely assume that the window is a client window.
     Window client_window = _event->window;
 
-    if (!is_in_ewmh_client_list(client_window)) {
-        add_to_ewmh_client_list(client_window);
-        publish_ewmh_client_list(display, root_window);
-    }
+    // Prevent duplicate entries in the client list.
+    if (is_in_ewmh_client_list(client_window)) return;
+
+    add_to_ewmh_client_list(client_window);
+    publish_ewmh_client_list(display, root_window);
 }
 
 HANDLE(DestroyNotify)
 {
     XDestroyWindowEvent *_event = &event->xdestroywindow;
 
-    // Considering a DestroyNotify event can only be sent by clients, we can
-    // safely assume that the window is a client window.
-    Window client_window = _event->window;
+    // The source of a DestroyNotify event is not guaranteed to be a client
+    // window, so we need to check if it's in the list before removing it.
+    if (!is_in_ewmh_client_list(_event->window)) return;
 
-    remove_from_ewmh_client_list(client_window);
+    remove_from_ewmh_client_list(_event->window);
     publish_ewmh_client_list(display, root_window);
 }
