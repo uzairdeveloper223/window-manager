@@ -96,13 +96,13 @@ Portal *create_portal(Display *display, Window client_window)
     {
         portal_height = MINIMUM_PORTAL_HEIGHT;
     }
-    if(portal_width > screen_width * MAXIMUM_PORTAL_WIDTH_PERCENTAGE)
+    if(portal_width > screen_width * MAXIMUM_INITIAL_PORTAL_WIDTH_PERCENT)
     {
-        portal_width = screen_width * MAXIMUM_PORTAL_WIDTH_PERCENTAGE;
+        portal_width = screen_width * MAXIMUM_INITIAL_PORTAL_WIDTH_PERCENT;
     }
-    if(portal_height > screen_height * MAXIMUM_PORTAL_HEIGHT_PERCENTAGE)
+    if(portal_height > screen_height * MAXIMUM_INITIAL_PORTAL_HEIGHT_PERCENT)
     {
-        portal_height = screen_height * MAXIMUM_PORTAL_HEIGHT_PERCENTAGE;
+        portal_height = screen_height * MAXIMUM_INITIAL_PORTAL_HEIGHT_PERCENT;
     }
     XResizeWindow(display, client_window, portal_width, portal_height - PORTAL_TITLE_BAR_HEIGHT);
 
