@@ -19,15 +19,11 @@ static void handle_x_event(Display *display, Window window, XEvent *event)
 
 static void handle_xi_event(Display *display, Window window, XEvent *event)
 {
-    // XInput2 event data doesn't fit in standard XEvent struct, so we need to
-    // explicitly request the additional data with XGetEventData. This data must
-    // later be freed with XFreeEventData to avoid memory leaks.
+    // Retrieve the XInput2 event data from the XEvent structure.
     if(XGetEventData(display, &event->xcookie) == False) return;
     XIRawEvent *raw_event = (XIRawEvent *)event->xcookie.data;
 
-    // Retrieve the device type in order to check whether the event is coming
-    // from from a master device. We only want to handle master device events
-    // and ignore slave devices.
+    // Ensure we only handle events from master devices.
     int device_type;
     if(xi_get_device_type(display, raw_event->deviceid, &device_type) == -1)
     {

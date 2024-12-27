@@ -33,11 +33,12 @@ int xi_get_device_type(Display *display, int device_id, int *out_device_type);
  * 
  * @note Retrieving the `XIRawEvent` data from an XInput2 event is unfortunately
  * not quite straight-forward. XInput2 events present themselves as an X11 
- * `GenericEvent`, containing all its data within the `xcookie` field of the 
- * event struct. One needs to use `XGetEventData(display, &event->xcookie)`
- * to extract this data. Once complete, the data is accessible as follows:
- * `(XIRawEvent)event->xcookie.data`. Don't forget to free the data afterwards
- * using `XFreeEventData` in order to prevent memory leaks.
+ * `xcookie` event, where `xcookie->type` is always `GenericEvent`, containing
+ * all its data within the `xcookie->data` field. The `xcookie->data` field is
+ * initially unpopulated and requires the usage of `XGetEventData()` for
+ * population. The `xcookie->data` field can then be cast with the `XIRawEvent`
+ * type and be passed to this function. The data must later be freed using
+ * `XFreeEventData()` in order to prevent memory leaks.
  */
 XEvent xi_convert_raw_button_press_event(Display *display, Window window, XIRawEvent *raw_event);
 
@@ -52,11 +53,12 @@ XEvent xi_convert_raw_button_press_event(Display *display, Window window, XIRawE
  * 
  * @note Retrieving the `XIRawEvent` data from an XInput2 event is unfortunately
  * not quite straight-forward. XInput2 events present themselves as an X11 
- * `GenericEvent`, containing all its data within the `xcookie` field of the 
- * event struct. One needs to use `XGetEventData(display, &event->xcookie)`
- * to extract this data. Once complete, the data is accessible as follows:
- * `(XIRawEvent)event->xcookie.data`. Don't forget to free the data afterwards
- * using `XFreeEventData` in order to prevent memory leaks.
+ * `xcookie` event, where `xcookie->type` is always `GenericEvent`, containing
+ * all its data within the `xcookie->data` field. The `xcookie->data` field is
+ * initially unpopulated and requires the usage of `XGetEventData()` for
+ * population. The `xcookie->data` field can then be cast with the `XIRawEvent`
+ * type and be passed to this function. The data must later be freed using
+ * `XFreeEventData()` in order to prevent memory leaks.
  */
 XEvent xi_convert_raw_button_release_event(Display *display, Window window, XIRawEvent *raw_event);
 
@@ -71,10 +73,11 @@ XEvent xi_convert_raw_button_release_event(Display *display, Window window, XIRa
  * 
  * @note Retrieving the `XIRawEvent` data from an XInput2 event is unfortunately
  * not quite straight-forward. XInput2 events present themselves as an X11 
- * `GenericEvent`, containing all its data within the `xcookie` field of the 
- * event struct. One needs to use `XGetEventData(display, &event->xcookie)`
- * to extract this data. Once complete, the data is accessible as follows:
- * `(XIRawEvent)event->xcookie.data`. Don't forget to free the data afterwards
- * using `XFreeEventData` in order to prevent memory leaks.
+ * `xcookie` event, where `xcookie->type` is always `GenericEvent`, containing
+ * all its data within the `xcookie->data` field. The `xcookie->data` field is
+ * initially unpopulated and requires the usage of `XGetEventData()` for
+ * population. The `xcookie->data` field can then be cast with the `XIRawEvent`
+ * type and be passed to this function. The data must later be freed using
+ * `XFreeEventData()` in order to prevent memory leaks.
  */
 XEvent xi_convert_raw_motion_event(Display *display, Window window, XIRawEvent *raw_event);
