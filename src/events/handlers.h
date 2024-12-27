@@ -1,18 +1,11 @@
 #pragma once
 #include "../all.h"
 
-typedef void EventHandler(XEvent *event, Display *display, Window root_window);
-
-typedef struct {
-    int event_type;
-    EventHandler *event_handler;
-} EventHandlerMap;
-
+// Macros for declaring and registering event handlers.
 #define EVENT_HANDLER_PARAMS \
     __attribute__((unused)) XEvent *event, \
     __attribute__((unused)) Display *display, \
     __attribute__((unused)) Window root_window
-
 #define HANDLE_IMPLEMENTATION(type, line, count) \
     void handler_##type##line##count(EVENT_HANDLER_PARAMS); \
     void register_handler_##type##line##count() __attribute__((constructor)); \
@@ -20,16 +13,25 @@ typedef struct {
         register_event_handler(type, &handler_##type##line##count); \
     } \
     void handler_##type##line##count(EVENT_HANDLER_PARAMS)
-
 #define HANDLE_EXPANDED(type, line, count) HANDLE_IMPLEMENTATION(type, line, count)
-
 #define HANDLE(type) HANDLE_EXPANDED(type, __LINE__, __COUNTER__)
+
+// Event handler callback function signature.
+typedef void EventHandler(XEvent *event, Display *display, Window root_window);
+
+// Key-value pair struct for storing event handlers.
+typedef struct {
+    int event_type;
+    EventHandler *event_handler;
+} EventHandlerMap;
 
 /**
  * Registers an event handler for a given event type.
  * 
  * @param event_type The type of event to register the handler for.
  * @param event_handler The event handler callback function.
+ * 
+ * @warning Don't use directly! Use the `HANDLE` macro instead.
  */
 void register_event_handler(int event_type, EventHandler *event_handler);
 
