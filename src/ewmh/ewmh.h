@@ -1,6 +1,8 @@
 #pragma once
 #include "../all.h"
 
+#ifdef STATIC
+
 /**
  * Establishes the identification chain required by the Extended Window Manager 
  * Hints (EWMH) specification. This allows other applications to: detect 
@@ -14,7 +16,7 @@
  *
  * @note https://specifications.freedesktop.org/wm-spec/1.5/ar01s03.html#id-1.4.12
  */
-void setup_ewmh_identification_chain(Display *display, Window root_window);
+static void setup_ewmh_identification_chain(Display *display, Window root_window);
 
 /**
  * Advertises the supported EWMH features on the root window. This allows other 
@@ -28,4 +30,6 @@ void setup_ewmh_identification_chain(Display *display, Window root_window);
  *
  * @note https://specifications.freedesktop.org/wm-spec/1.5/ar01s03.html#id-1.4.3
  */
-void setup_ewmh_supported_list(Display *display, Window root_window);
+static void setup_ewmh_supported_list(Display *display, Window root_window);
+
+#endif

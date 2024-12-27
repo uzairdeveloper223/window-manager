@@ -1,6 +1,6 @@
 #include "../all.h"
 
-void setup_ewmh_identification_chain(Display *display, Window root_window)
+static void setup_ewmh_identification_chain(Display *display, Window root_window)
 {
     Atom net_supporting_wm_check = XInternAtom(display, "_NET_SUPPORTING_WM_CHECK", False);
     Atom net_wm_name = XInternAtom(display, "_NET_WM_NAME", False);
@@ -53,7 +53,7 @@ void setup_ewmh_identification_chain(Display *display, Window root_window)
     );
 }
 
-void setup_ewmh_supported_list(Display *display, Window root_window)
+static void setup_ewmh_supported_list(Display *display, Window root_window)
 {
     // Define a list of supported EWMH features.
     Atom features[] = {
@@ -79,4 +79,10 @@ void setup_ewmh_supported_list(Display *display, Window root_window)
         (unsigned char *)features,          // Property Data
         sizeof(features) / sizeof(Atom)     // Element Count
     );
+}
+
+HANDLE(Initialize)
+{
+    setup_ewmh_identification_chain(display, root_window);
+    setup_ewmh_supported_list(display, root_window);
 }
