@@ -4,9 +4,9 @@ static cairo_t *cr = NULL;
 static cairo_surface_t *xlib_surface = NULL;
 static cairo_surface_t *png_surface = NULL;
 
-static char background_mode[16];
-static unsigned long background_color;
-static char background_image_path[MAX_PATH];
+static char cfg_background_mode[16];
+static unsigned long cfg_background_color;
+static char cfg_background_image_path[MAX_PATH];
 
 static cairo_surface_t *load_background_image(Display *display, const char *filename)
 {
@@ -65,9 +65,9 @@ static void draw_background_solid(cairo_t *cr, unsigned long color)
 HANDLE(Initialize)
 {
     // Get configuration values.
-    GET_CONFIG(background_mode, sizeof(background_mode), CFG_BUNDLE_BACKGROUND_MODE);
-    GET_CONFIG(&background_color, sizeof(background_color), CFG_BUNDLE_BACKGROUND_COLOR);
-    GET_CONFIG(background_image_path, sizeof(background_image_path), CFG_BUNDLE_BACKGROUND_IMAGE_PATH);
+    GET_CONFIG(cfg_background_mode, sizeof(cfg_background_mode), CFG_BUNDLE_BACKGROUND_MODE);
+    GET_CONFIG(&cfg_background_color, sizeof(cfg_background_color), CFG_BUNDLE_BACKGROUND_COLOR);
+    GET_CONFIG(cfg_background_image_path, sizeof(cfg_background_image_path), CFG_BUNDLE_BACKGROUND_IMAGE_PATH);
 
     // Prepare xlib surface.
     int screen = DefaultScreen(display);
@@ -76,10 +76,10 @@ HANDLE(Initialize)
     xlib_surface = cairo_xlib_surface_create(display, root_window, DefaultVisual(display, screen), screen_width, screen_height);
 
     // Prepare png surface if neccessary.
-    if (strcmp(background_mode, "image") == 0)
+    if (strcmp(cfg_background_mode, "image") == 0)
     {
         char expanded_path[MAX_PATH];
-        expand_path(background_image_path, expanded_path, sizeof(expanded_path));
+        expand_path(cfg_background_image_path, expanded_path, sizeof(expanded_path));
         png_surface = load_background_image(display, expanded_path);
     }
 
@@ -92,13 +92,13 @@ HANDLE(Expose)
 
     if (_event->window == root_window && _event->count == 0)
     {
-        if (strcmp(background_mode, "image") == 0)
+        if (strcmp(cfg_background_mode, "image") == 0)
         {
             draw_background_image(cr, png_surface);
         }
         else
         {
-            draw_background_solid(cr, background_color);
+            draw_background_solid(cr, cfg_background_color);
         }
     }
 }
