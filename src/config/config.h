@@ -1,14 +1,6 @@
 #pragma once
 #include "../all.h"
 
-#define CFG_DIRECTORY "~/.config/lime-os-wm"
-#define CFG_FILE_PATH "~/.config/lime-os-wm/config"
-
-#define CFG_MAX_LINE_LENGTH 256
-#define CFG_MAX_KEY_LENGTH 64
-#define CFG_MAX_VALUE_LENGTH 64
-#define CFG_MAX_ENTRIES 64
-
 // Macros for retrieving configuration values.
 #define GET_CONFIG_IMPL(dest, dest_size, type, key, fallback) \
     get_config_value_##type(dest, dest_size, key, fallback)
@@ -41,39 +33,6 @@
         CFG_TYPE_BACKGROUND_IMAGE_PATH, \
         CFG_KEY_BACKGROUND_IMAGE_PATH, \
         CFG_DEFAULT_BACKGROUND_IMAGE_PATH
-
-// Key-value pair struct for storing configuration entries.
-typedef struct {
-    char key[CFG_MAX_KEY_LENGTH];
-    char value[CFG_MAX_VALUE_LENGTH];
-} ConfigEntry;
-
-#ifdef STATIC
-
-/**
- * Creates the configuration directory and all its parent directories if they
- * don't exist.
- *
- * @param path Full path of the configuration directory to create.
- */
-static void create_config_directory(const char *path);
-
-/**
- * Creates a new configuration file with default settings.
- *
- * @param path Path where the configuration file should be created.
- */
-static void create_config_file(const char *path);
-
-/**
- * Parses a configuration file and stores the key-value pairs in the
- * configuration entries array.
- *
- * @param path Path to the configuration file.
- */
-static void parse_config_file(const char *path);
-
-#endif
 
 /**
  * Retrieves a configuration value from the loaded configuration entries.

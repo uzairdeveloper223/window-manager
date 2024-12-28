@@ -1,7 +1,20 @@
 #include "../all.h"
 
+#define CFG_DIRECTORY "~/.config/lime-os-wm"
+#define CFG_FILE_PATH "~/.config/lime-os-wm/config"
+
+#define CFG_MAX_LINE_LENGTH 256
+#define CFG_MAX_KEY_LENGTH 64
+#define CFG_MAX_VALUE_LENGTH 64
+#define CFG_MAX_ENTRIES 64
+
+typedef struct {
+    char key[CFG_MAX_KEY_LENGTH];
+    char value[CFG_MAX_VALUE_LENGTH];
+} ConfigEntry;
+
 static ConfigEntry config_entries[CFG_MAX_ENTRIES];
-static int config_count = 0;
+static int config_entries_count = 0;
 
 // clang-format off
 static const char default_config[] =
@@ -84,9 +97,9 @@ static void parse_config_file(const char *path)
 
         if (sscanf(line, "%63[^=]=%63s", key, value) == 2)
         {
-            strncpy(config_entries[config_count].key, key, CFG_MAX_KEY_LENGTH);
-            strncpy(config_entries[config_count].value, value, CFG_MAX_VALUE_LENGTH);
-            config_count++;
+            strncpy(config_entries[config_entries_count].key, key, CFG_MAX_KEY_LENGTH);
+            strncpy(config_entries[config_entries_count].value, value, CFG_MAX_VALUE_LENGTH);
+            config_entries_count++;
         }
     }
 
@@ -100,7 +113,7 @@ void get_config_value_str(char *dest, size_t dest_size, char *key, char *fallbac
 
     if (dest_size > 0)
     {
-        for (int i = 0; i < config_count; i++)
+        for (int i = 0; i < config_entries_count; i++)
         {
             if (strcmp(config_entries[i].key, key) == 0)
             {
