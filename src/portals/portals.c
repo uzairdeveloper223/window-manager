@@ -131,14 +131,40 @@ Portal *create_portal(Display *display, Window client_window)
     XMapWindow(display, frame_window);
     XMapWindow(display, client_window);
 
+    // Invoke the PortalCreated event.
+    XEvent event;
+    event.xclient.type = ClientMessage;
+    event.xclient.display = display;
+    event.xclient.window = DefaultRootWindow(display);
+    event.xclient.message_type = XInternAtom(display, "_WM_PORTAL_CREATED", False);
+    event.xclient.format = 32;
+    event.xclient.data.l[0] = (long)portal;
+    invoke_event_handlers(display, DefaultRootWindow(display), PortalCreated, &event);
+
     return portal;
 }
 
 void destroy_portal(Portal *portal)
 {
+    Display *display = portal->display;
+    Window client_window = portal->client_window;
+    Window frame_window = portal->frame_window;
+
+    // Destroy the client and frame windows, and unregister the portal.
     destroy_portal_client(portal);
     destroy_portal_frame(portal);
     unregister_portal(portal);
+
+    // Invoke the PortalDestroyed event.
+    XEvent event;
+    event.xclient.type = ClientMessage;
+    event.xclient.display = display;
+    event.xclient.window = DefaultRootWindow(display);
+    event.xclient.message_type = XInternAtom(display, "_WM_PORTAL_DESTROYED", False);
+    event.xclient.format = 32;
+    event.xclient.data.l[0] = (long)client_window;
+    event.xclient.data.l[1] = (long)frame_window;
+    invoke_event_handlers(display, DefaultRootWindow(display), PortalDestroyed, &event);
 }
 
 Portal *find_portal(Window window)

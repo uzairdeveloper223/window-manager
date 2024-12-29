@@ -23,6 +23,7 @@
 
 #include "ewmh/ewmh.h"
 #include "ewmh/client_list.h"
+#include "ewmh/active_window.h"
 
 #include "utils/utils.h"
 #include "utils/xlib.h"

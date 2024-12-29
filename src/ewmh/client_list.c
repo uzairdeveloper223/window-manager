@@ -13,11 +13,12 @@ static Window *client_list = NULL;
 static size_t client_count = 0;
 static size_t client_capacity = 0;
 
-static void publish_ewmh_client_list(Display *display, Window root_window) {
+static void publish_ewmh_client_list(Display *display)
+{
     Atom net_client_list = XInternAtom(display, "_NET_CLIENT_LIST", False);
     XChangeProperty(
         display,
-        root_window,
+        DefaultRootWindow(display),
         net_client_list,
         XA_WINDOW,
         32,
@@ -27,17 +28,22 @@ static void publish_ewmh_client_list(Display *display, Window root_window) {
     );
 }
 
-static void add_to_ewmh_client_list(Window window) {
-    if (client_count >= client_capacity) {
+static void add_to_ewmh_client_list(Window window)
+{
+    if (client_count >= client_capacity)
+    {
         client_capacity = (client_capacity == 0) ? 16 : client_capacity * 2;
         client_list = realloc(client_list, client_capacity * sizeof(Window));
     }
     client_list[client_count++] = window;
 }
 
-static void remove_from_ewmh_client_list(Window window) {
-    for (size_t i = 0; i < client_count; i++) {
-        if (client_list[i] == window) {
+static void remove_from_ewmh_client_list(Window window)
+{
+    for (size_t i = 0; i < client_count; i++)
+    {
+        if (client_list[i] == window)
+        {
             memmove(&client_list[i], &client_list[i + 1], (client_count - i - 1) * sizeof(Window));
             client_count--;
             break;
@@ -45,38 +51,38 @@ static void remove_from_ewmh_client_list(Window window) {
     }
 }
 
-static Bool is_in_ewmh_client_list(Window window) {
-    for (size_t i = 0; i < client_count; i++) {
-        if (client_list[i] == window) {
+static bool is_in_ewmh_client_list(Window window)
+{
+    for (size_t i = 0; i < client_count; i++)
+    {
+        if (client_list[i] == window)
+        {
             return True;
         }
     }
     return False;
 }
 
-HANDLE(MapRequest)
+HANDLE(PortalCreated)
 {
-    XMapRequestEvent *_event = &event->xmaprequest;
+    XClientMessageEvent *_event = &event->xclient;
+    Portal *portal = (Portal *)_event->data.l[0];
 
-    // Considering a MapRequest event can only be sent by clients, we can
-    // safely assume that the window is a client window.
-    Window client_window = _event->window;
-
-    // Prevent duplicate entries in the client list.
-    if (is_in_ewmh_client_list(client_window)) return;
-
-    add_to_ewmh_client_list(client_window);
-    publish_ewmh_client_list(display, root_window);
+    if (!is_in_ewmh_client_list(portal->client_window))
+    {
+        add_to_ewmh_client_list(portal->client_window);
+        publish_ewmh_client_list(display);
+    }
 }
 
-HANDLE(DestroyNotify)
+HANDLE(PortalDestroyed)
 {
-    XDestroyWindowEvent *_event = &event->xdestroywindow;
+    XClientMessageEvent *_event = &event->xclient;
+    Window client_window = (Window)_event->data.l[0];
 
-    // The source of a DestroyNotify event is not guaranteed to be a client
-    // window, so we need to check if it's in the list before removing it.
-    if (!is_in_ewmh_client_list(_event->window)) return;
-
-    remove_from_ewmh_client_list(_event->window);
-    publish_ewmh_client_list(display, root_window);
+    if (is_in_ewmh_client_list(client_window))
+    {
+        remove_from_ewmh_client_list(client_window);
+        publish_ewmh_client_list(display);
+    }
 }
