@@ -25,7 +25,7 @@ typedef void EventHandler(XEvent *event, Display *display, Window root_window);
  * @param event_type The type of event to register the handler for.
  * @param event_handler The event handler callback function.
  * 
- * @warning Don't use directly! Use the `HANDLE` macro instead.
+ * @warning Don't use directly! Use the `HANDLE()` macro instead.
  */
 void register_event_handler(int event_type, EventHandler *event_handler);
 
@@ -35,9 +35,6 @@ void register_event_handler(int event_type, EventHandler *event_handler);
  * @param display The X11 display.
  * @param window The X11 window where the event occurred.
  * @param event_type The type of event that occurred.
- * @param event The event data.
- * 
- * @note Even though the event data contains the event type, it is passed as a
- * separate parameter anyways to allow for custom event types.
+ * @param event The event data, can be `NULL` for custom events.
  */
 void invoke_event_handlers(Display *display, Window window, int event_type, XEvent *event);

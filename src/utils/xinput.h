@@ -8,7 +8,9 @@
  * @param display The X11 display.
  * @param window The X11 window where the events should be listened for.
  * @param mask Bitmask of XInput2 events to select / listen to.
- * @return 0 if successful, non-zero integer otherwise.
+ * 
+ * @return - `0` Execution was successful.
+ * @return - `-1` Internal `XISelectEvents()` call failed.
  */
 int xi_select_input(Display *display, Window window, long mask);
 
@@ -18,7 +20,9 @@ int xi_select_input(Display *display, Window window, long mask);
  * @param display The X11 display.
  * @param device_id The ID of the XInput2 device.
  * @param out_device_type The output parameter to store the device type.
- * @return 0 if successful, non-zero integer otherwise.
+ * 
+ * @return - `0` Execution was successful.
+ * @return - `-1` Internal `XIQueryDevice()` call failed.
  */
 int xi_get_device_type(Display *display, int device_id, int *out_device_type);
 
@@ -29,6 +33,7 @@ int xi_get_device_type(Display *display, int device_id, int *out_device_type);
  * @param display The X11 display.
  * @param window The X11 window where the event occurred.
  * @param raw_event The XInput2 `RawButtonPress` event to convert.
+ * 
  * @return The converted standard X11 `ButtonPress` event.
  * 
  * @note Retrieving the `XIRawEvent` data from an XInput2 event is unfortunately
@@ -49,6 +54,7 @@ XEvent xi_convert_raw_button_press_event(Display *display, Window window, XIRawE
  * @param display The X11 display.
  * @param window The X11 window where the event occurred.
  * @param raw_event The XInput2 `RawButtonRelease` event to convert.
+ * 
  * @return The converted standard X11 `ButtonRelease` event.
  * 
  * @note Retrieving the `XIRawEvent` data from an XInput2 event is unfortunately
@@ -69,6 +75,7 @@ XEvent xi_convert_raw_button_release_event(Display *display, Window window, XIRa
  * @param display The X11 display.
  * @param window The X11 window where the event occurred.
  * @param raw_event The XInput2 `RawMotion` event to convert.
+ * 
  * @return The converted standard X11 `MotionNotify` event.
  * 
  * @note Retrieving the `XIRawEvent` data from an XInput2 event is unfortunately

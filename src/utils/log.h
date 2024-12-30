@@ -37,7 +37,7 @@
  * @param message The message to log, with optional format specifiers.
  * @param ... The arguments to format the message with.
  * 
- * @warning Not intended to be run directly! Use the `LOG_INFO`, `LOG_WARNING`
- * and `LOG_ERROR` macros instead.
+ * @warning Don't use directly! Use the `LOG_INFO`, `LOG_WARNING` and 
+ * `LOG_ERROR` macros instead.
  */
 void log_message(const char* severity, const char* file, int line, const char* message, ...);

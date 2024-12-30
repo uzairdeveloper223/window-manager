@@ -34,7 +34,8 @@ typedef struct {
  * @param display The display where the portal will be located.
  * @param client_window The client window to create the portal from.
  * 
- * @return The created portal, or `NULL` upon failure.
+ * @return - `Portal*` The portal was created successfully.
+ * @return - `NULL` The portal could not be created.
  */
 Portal *create_portal(Display *display, Window client_window);
 
@@ -67,6 +68,7 @@ void unmap_portal(Portal *portal);
  * 
  * @param window A client or frame window.
  * 
- * @return The found portal or `NULL` if not found.
+ * @return - `Portal*` The portal was found. 
+ * @return - `NULL` The portal could not be found.
  */
 Portal *find_portal(Window window);

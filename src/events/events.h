@@ -5,9 +5,10 @@
  * A custom event type. This event is invoked before the `Initialize` event, and
  * is intended to be used for any necessary setup before the event loop begins.
  * 
- * @note When the `Prepare` event is invoked, configuration has not yet been loaded.
- * @note When using within a `HANDLE()` macro, the event is always `NULL`.
- * @note Only handle the `Prepare` event if absolutely necessary. Use the
+ * @note - When the `Prepare` event is invoked, configuration has not yet been
+ * loaded.
+ * @note - When using within a `HANDLE()` macro, the event is always `NULL`.
+ * @note - Only handle the `Prepare` event if absolutely necessary. Use the
  * `Initialize` event for most setup tasks.
  */
 #define Prepare 128
@@ -16,8 +17,9 @@
  * A custom event type. This event is invoked after the `Prepare` event, and
  * is intended to be used for any necessary setup after the event loop begins.
  * 
- * @note When the `Initialize` event is invoked, configuration has been loaded.
- * @note When using within a `HANDLE()` macro, the event is always `NULL`.
+ * @note - When the `Initialize` event is invoked, configuration has been
+ * loaded.
+ * @note - When using within a `HANDLE()` macro, the event is always `NULL`.
  */
 #define Initialize 129
 
@@ -26,7 +28,7 @@
  * that it is invoked when a button is pressed anywhere on the screen, no matter
  * what events are being listened for on the target window.
  * 
- * @note When using within a `HANDLE()` macro, the event presents itself as a 
+ * @note - When using within a `HANDLE()` macro, the event presents itself as a 
  * standard Xlib `xbutton` event.
  */
 #define GlobalButtonPress 130
@@ -36,7 +38,7 @@
  * that it is invoked when a button is released anywhere on the screen, no matter
  * what events are being listened for on the target window.
  * 
- * @note When using within a `HANDLE()` macro, the event presents itself as a 
+ * @note - When using within a `HANDLE()` macro, the event presents itself as a 
  * standard Xlib `xbutton` event.
  */
 #define GlobalButtonRelease 131
@@ -46,7 +48,7 @@
  * that it is invoked when a pointer is moved anywhere on the screen, no matter
  * what events are being listened for on the target window.
  * 
- * @note When using within a `HANDLE()` macro, the event presents itself as a 
+ * @note - When using within a `HANDLE()` macro, the event presents itself as a 
  * standard Xlib `xmotion` event.
  */
 #define GlobalMotionNotify 132
@@ -54,29 +56,34 @@
 /**
  * A custom event type. Invoked when a portal is created.
  * 
- * @note When using within a `HANDLE()` macro, the event presents itself as a
- * standard Xlib `xclient` event. Where `(Portal*)xclient->data.l[0]` contains a
- * pointer to the created portal.
+ * @note - When using within a `HANDLE()` macro, the event presents itself as a
+ * standard Xlib `xclient` event.
+ * @note - A pointer to the created window can be found in: 
+ * `(Portal*)xclient->data.l[0]`.
  */
 #define PortalCreated 133
 
 /**
  * A custom event type. Invoked when a portal is destroyed.
  * 
- * @note When using within a `HANDLE()` macro, the event presents itself as a
- * standard Xlib `xclient` event. Where `(Window)xclient->data.l[0]` contains
- * the client window ID, and `(Window)xclient->data.l[1]` contains the frame 
- * window ID. Both windows are destroyed by the time this event is invoked,
- * but their ID's may still be used to perform any necessary cleanup.
+ * @note - When using within a `HANDLE()` macro, the event presents itself as a
+ * standard Xlib `xclient` event.
+ * @note - The client window ID of the destroyed portal can be found in:
+ * `(Window)xclient->data.l[0]`.
+ * @note - The frame window ID of the destroyed portal can be found in:
+ * `(Window)xclient->data.l[1]`.
+ * @note - Both windows are destroyed, but their ID's may still be used to 
+ * perform any necessary cleanup.
  */
 #define PortalDestroyed 134
 
 /**
  * A custom event type. Invoked when a portal is focused.
  * 
- * @note When using within a `HANDLE()` macro, the event presents itself as a
- * standard Xlib `xclient` event. Where `(Portal*)xclient->data.l[0]` contains a
- * pointer to the focused portal.
+ * @note - When using within a `HANDLE()` macro, the event presents itself as a
+ * standard Xlib `xclient` event.
+ * @note - A pointer to the focused window can be found in:
+ * `(Portal*)xclient->data.l[0]`.
  */
 #define PortalFocused 135
 
@@ -86,9 +93,5 @@
  * 
  * @param display The X11 display.
  * @param root_window The X11 root window.
- * 
- * @note This function initiates an infinite loop and does not return under
- * normal circumstances. Any code that follows this function call will be
- * unreachable.
  */
 void initialize_event_loop(Display *display, Window root_window);

@@ -2,7 +2,7 @@
 #include "../all.h"
 
 /**
- * @brief Converts RGB values to a hexadecimal representation.
+ * Converts RGB values to a hexadecimal representation.
  *
  * @param r Red channel, in the range [0.0, 1.0].
  * @param g Green channel, in the range [0.0, 1.0].
@@ -13,7 +13,7 @@
 unsigned long rgb_to_hex(double r, double g, double b);
 
 /**
- * @brief Converts RGBA values to a hexadecimal representation.
+ * Converts RGBA values to a hexadecimal representation.
  *
  * @param r Red channel, in the range [0.0, 1.0].
  * @param g Green channel, in the range [0.0, 1.0].
@@ -25,7 +25,7 @@ unsigned long rgb_to_hex(double r, double g, double b);
 unsigned long rgba_to_hex(double r, double g, double b, double a);
 
 /**
- * @brief Converts a hexadecimal color value to RGB components.
+ * Converts a hexadecimal color value to RGB components.
  *
  * @param hex The hexadecimal representation of the color.
  * @param r Pointer to the red channel, where the result will be stored, in the range [0.0, 1.0].
@@ -35,7 +35,7 @@ unsigned long rgba_to_hex(double r, double g, double b, double a);
 void hex_to_rgb(unsigned long hex, double *r, double *g, double *b);
 
 /**
- * @brief Converts a hexadecimal color value to RGBA components.
+ * Converts a hexadecimal color value to RGBA components.
  *
  * @param hex The hexadecimal representation of the color.
  * @param r Pointer to the red channel, where the result will be stored, in the range [0.0, 1.0].
@@ -52,7 +52,8 @@ void hex_to_rgba(unsigned long hex, double *r, double *g, double *b, double *a);
  * @param expanded_path A pointer to the buffer where the expanded path will be stored.
  * @param size The size of the buffer pointed to by expanded_path.
  *
- * @return 0 on success, or -1 if an error occurs (e.g. HOME env var not set or buffer too small).
+ * @return - `0` Execution was successful.
+ * @return - `-1` An error occurred (e.g. HOME env var not set or buffer too small).
  */
 int expand_path(const char *path, char *expanded_path, size_t size);
 
