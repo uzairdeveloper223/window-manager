@@ -62,6 +62,7 @@ static void stop_resizing_portal()
     is_resizing = false;
 
     // Notify the client window of the new size.
+    if (resized_portal == NULL || resized_portal->client_window == 0) return;
     XConfigureEvent configure_event = {
         .type = ConfigureNotify,
         .display = resized_portal->display,

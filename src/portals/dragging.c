@@ -51,6 +51,7 @@ static void stop_dragging_portal()
     is_dragging = false;
 
     // Notify the client window of the new position.
+    if (dragged_portal == NULL || dragged_portal->client_window == 0) return;
     XConfigureEvent configure_event = {
         .type = ConfigureNotify,
         .display = dragged_portal->display,
