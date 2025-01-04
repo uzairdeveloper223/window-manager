@@ -8,6 +8,13 @@ static const char *libraries[] = {
 
 int main()
 {
+    // Ensure the program isn't being run as root.
+    if(geteuid() == 0)
+    {
+        LOG_ERROR("Running as root is not secure.");
+        exit(EXIT_FAILURE);
+    }
+
     // Ensure that the required libraries are available.
     const int library_count = sizeof(libraries) / sizeof(libraries[0]);
     for(int i = 0; i < library_count; i++)
