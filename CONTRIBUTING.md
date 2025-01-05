@@ -15,6 +15,7 @@ This document outlines the guidelines for contributing to this repository. Wheth
 
 **General Contributing Guidelines**  
 •&emsp;[Git Workflow](#git-workflow)  
+•&emsp;[Versioning](#versioning)  
 •&emsp;[Naming Convention](#naming-convention)  
 &emsp;•&emsp;[Function Naming](#function-naming)  
 &emsp;•&emsp;[Variable Naming](#variable-naming)  
@@ -95,6 +96,21 @@ In order to contribute, you must follow these steps:
 &emsp;5\. Submit a pull request targeting the `develop` branch.  
 
 A more in-depth guide on Gitflow can be found [here](https://nvie.com/posts/a-successful-git-branching-model/).
+
+### Versioning
+
+This repository adheres to Semantic Versioning (Semver), which uses a three-part version number in the following format:  
+&emsp;•&emsp;`MAJOR` - Incremented for incompatible API changes.  
+&emsp;•&emsp;`MINOR` - Incremented for backwards-compatible new features.  
+&emsp;•&emsp;`PATCH` - Incremented for backwards-compatible bug fixes.  
+
+Examples:  
+&emsp;•&emsp;`1.0.0` - Initial stable release.  
+&emsp;•&emsp;`1.1.0` - Added new features.  
+&emsp;•&emsp;`1.1.1` - Added bug fixes.  
+&emsp;•&emsp;`2.0.0` - Introduced breaking changes.  
+
+A more in-depth guide on Semver can be found [here](https://semver.org/).
 
 ### Naming Convention
 
