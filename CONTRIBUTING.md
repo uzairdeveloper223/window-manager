@@ -6,7 +6,12 @@
 
 ###
 
-This document outlines the guidelines for contributing to this repository. Whether you're adding new features, fixing bugs, or improving the existing codebase, adhering to these standards ensures that the code remains consistent, readable, and maintainable.
+This document outlines the guidelines for contributing to this repository. It consists of two primary sections:  
+
+•&emsp;Repository Contributing Guidelines - Guidelines specific to this repository.  
+•&emsp;General Contributing Guidelines - Guidelines for all LimeOS repositories.  
+
+When conflicts arise between these sections, always follow the repository-specific guidelines as they take precedence over general guidelines.
 
 ### Table of Contents
 
