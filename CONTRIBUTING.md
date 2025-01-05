@@ -21,6 +21,7 @@ This document outlines the guidelines for contributing to this repository. Wheth
 &emsp;•&emsp;[Type Naming](#type-naming)  
 &emsp;•&emsp;[Macro Naming](#macro-naming)  
 &emsp;•&emsp;[File Naming](#file-naming)  
+&emsp;•&emsp;[Binary Naming](#binary-naming)  
 •&emsp;[Declaration Order](#declaration-order)  
 •&emsp;[Documentation](#documentation)  
 &emsp;•&emsp;[Header File](#header-file-h)  
@@ -62,7 +63,7 @@ environment to prevent unexpected behavior.
 
 ```bash
 Xephyr -br -ac -noreset -screen 800x600 :1
-DISPLAY=:1 ./bin/lime-os-wm
+DISPLAY=:1 ./bin/lime-os-window-manager
 ```
 
 Then if you'd like, you could start an application on the new display as follows:
@@ -197,6 +198,33 @@ All file names in this repository must adhere to the _snake_case_ naming convent
    **✓**  `user/auth.c`  
    **✓**  `user/auth/tokens.c`  
    **𐄂**  `user/authentication_tokens.c`
+
+#### Binary Naming  
+
+All binary files built in this repository must adhere to the _dash-case_ naming convention. Consider these guidelines when naming a binary file:  
+
+1. **LimeOS Prefix**  
+   All binary files must start with the `lime-os` prefix.
+
+   Examples:  
+   **✓**  `lime-os-window-manager`    
+   **𐄂**  `lime-window-manager`
+
+2. **Avoid Abbreviations**  
+   Binary file names must use complete words rather than shortened forms to maintain clarity and prevent naming conflicts.
+
+   Examples:  
+   **✓**  `lime-os-window-manager`    
+   **𐄂**  `lime-os-wm`  
+
+3. **Suffixes**  
+   When building binary files for internal libraries or LimeOS extensions, append the `lib` or `ext` suffix respectively.
+
+   Examples:  
+   **✓**  `lime-os-config-lib`    
+   **✓**  `lime-os-settings-ext`    
+   **𐄂**  `lime-os-config`  
+   **𐄂**  `lime-os-settings`  
 
 ### Declaration Order
 
