@@ -21,6 +21,7 @@ When conflicts arise between these sections, always follow the repository-specif
 **General Contributing Guidelines**  
 •&emsp;[Git Workflow](#git-workflow)  
 •&emsp;[Versioning](#versioning)  
+•&emsp;[File Structure](#file-structure)  
 •&emsp;[Naming Convention](#naming-convention)  
 &emsp;•&emsp;[Function Naming](#function-naming)  
 &emsp;•&emsp;[Variable Naming](#variable-naming)  
@@ -116,6 +117,18 @@ Examples:
 &emsp;•&emsp;`2.0.0` - Introduced breaking changes.  
 
 A more in-depth guide on Semver can be found [here](https://semver.org/).
+
+### File Structure
+
+This repository must follow these structural guidelines:
+
+1. **Minimal Root Directory**  
+The root directory must only contain critical repository files such as build configurations, documentation, and source directory. All other files should be organized within appropriate subdirectories.
+
+2. **Source Organization**  
+•&emsp;All code must reside within the `src` directory.  
+•&emsp;Organize code into subdirectories by module/feature.  
+•&emsp;Source files (.c) and header files (.h) must be paired and share the same name within the same directory, except for `main.c`.
 
 ### Naming Convention
 
