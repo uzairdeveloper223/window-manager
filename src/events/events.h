@@ -108,6 +108,15 @@
 #define PortalFocused 137
 
 /**
+ * A custom event type. Invoked when a shortcut is pressed.
+ * 
+ * @note - When using within a `HANDLE()` macro, the event presents itself as a
+ * standard Xlib `xclient` event.
+ * @note - The name of the shortcut can be found in: `(char*)xclient->data.b`.
+ */
+#define ShortcutPressed 138
+
+/**
  * Initiates an infinite loop, handling X11/XInput2 events as they come in, and
  * invoking the appropriate registered event handlers.
  * 

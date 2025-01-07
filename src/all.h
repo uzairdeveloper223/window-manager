@@ -2,11 +2,13 @@
 
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
+#include <X11/XKBlib.h>
 #include <X11/Xatom.h>
 #include <X11/extensions/XInput2.h>
 #include <cairo/cairo.h>
 #include <cairo/cairo-xlib.h>
 #include <stdio.h>
+#include <ctype.h>
 #include <stdarg.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -21,6 +23,9 @@
 
 #include "config/config.h"
 #include "background/background.h"
+
+#include "shortcuts/shortcuts.h"
+#include "shortcuts/input.h"
 
 #include "ewmh/ewmh.h"
 #include "ewmh/client_list.h"

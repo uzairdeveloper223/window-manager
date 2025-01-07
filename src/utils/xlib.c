@@ -82,3 +82,97 @@ bool x_window_exists(Display *display, Window window)
 {
     return XGetWindowAttributes(display, window, &(XWindowAttributes){0}) != 0;
 }
+
+int x_key_name_to_symbol(const char *name, int *out_key)
+{
+    // Create a copy of the provided key name string.
+    char *name_copy = strdup(name);
+
+    // Make the key name string lowercase.
+    for (int i = 0; i < (int)strlen(name_copy); i++)
+    {
+        name_copy[i] = tolower(name_copy[i]);
+    }
+
+    // Convert the key name to a key symbol.
+    if (strcmp(name_copy, "super") == 0)
+    {
+        *out_key = XK_Super_L;
+    }
+    else if (strcmp(name_copy, "control") == 0)
+    {
+        *out_key = XK_Control_L;
+    }
+    else if (strcmp(name_copy, "ctrl") == 0)
+    {
+        *out_key = XK_Control_L;
+    }
+    else if (strcmp(name_copy, "shift") == 0)
+    {
+        *out_key = XK_Shift_L;
+    }
+    else if (strcmp(name_copy, "alt") == 0)
+    {
+        *out_key = XK_Alt_L;
+    }
+    else if (strcmp(name_copy, "enter") == 0)
+    {
+        *out_key = XK_Return;
+    }
+    else
+    {
+        // The `XStringToKeysym()` function expects the first character to be
+        // uppercase, with the exception of single letters (e.g. 'a', 'b', 'c').
+        if (strlen(name_copy) > 1)
+        {
+            name_copy[0] = toupper(name_copy[0]);
+        }
+        *out_key = XStringToKeysym(name_copy);
+    }
+
+    // Free the duplicate string.
+    free(name_copy);
+
+    return (out_key != NoSymbol) ? 0 : -1;
+}
+
+int x_key_names_to_symbols(char *names, const char delimiter, int *out_keys, int keys_size)
+{
+    int status = 0;
+
+    // Create a copy of the provided key names string.
+    char *names_copy = strdup(names);
+
+    // Make the key names string lowercase.
+    for (int i = 0; i < (int)strlen(names_copy); i++)
+    {
+        names_copy[i] = tolower(names_copy[i]);
+    }
+    
+    // Split the key names string by the delimiter and iterate over each token.
+    char *token = strtok(names_copy, &delimiter);
+    for (int i = 0; i < keys_size; i++)
+    {
+        // If we ran out of tokens, but the loop isn't completed yet, fill the 
+        // remaining key symbol slots with NoSymbol.
+        if (token == NULL)
+        {
+            out_keys[i] = NoSymbol;
+            continue;
+        }
+
+        // Convert the token (key name) to a key symbol.
+        int key = 0;
+        x_key_name_to_symbol(token, &key);
+        if (key == NoSymbol) status = -1;
+        out_keys[i] = key;
+
+        // Prepare for the next iteration.
+        token = strtok(NULL, &delimiter);
+    }
+
+    // Free the duplicate string.
+    free(names_copy);
+
+    return status;
+}

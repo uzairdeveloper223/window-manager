@@ -54,3 +54,34 @@ bool x_window_supports_protocol(Display *display, Window window, Atom protocol);
  * @return True (1) if the window exists, False (0) otherwise.
  */
 bool x_window_exists(Display *display, Window window);
+
+/**
+ * @brief Converts a key name to a key symbol.
+ * 
+ * @param name The string containing the key name.
+ * @param out_key The buffer where the key symbol will be stored.
+ * 
+ * @return - `0` The conversion was succesful.
+ * @return - `-1` The conversion failed, key symbol output is `NoSymbol`.
+ * 
+ * @note - This function treats key names case-insensitively.
+ * @note - If you want to convert multiple key names, use the 
+ * `x_key_names_to_symbols()` function.
+ */
+int x_key_name_to_symbol(const char *name, int *out_key);
+
+/**
+ * @brief Converts multiple key names to multiple key symbols.
+ * 
+ * @param names The string containing the key names.
+ * @param delimiter The delimiter used to separate the key names.
+ * @param out_keys The buffer where the key symbols will be stored.
+ * @param keys_size The size of the `out_keys` buffer.
+ * 
+ * @return - `0` The conversion was succesful.
+ * @return - `-1` The conversion was completed, but one or more key names were
+ * invalid.
+ * 
+ * @note - This function treats key names case-insensitively.
+ */
+int x_key_names_to_symbols(char *names, const char delimiter, int *out_keys, int keys_size);

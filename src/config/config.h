@@ -1,11 +1,50 @@
 #pragma once
 #include "../all.h"
 
+// The maximum length of a configuration file line.
+#define CFG_MAX_LINE_LENGTH 256
+
+// The maximum length of a configuration key.
+#define CFG_MAX_KEY_LENGTH 64
+
+// The maximum length of a configuration value.
+#define CFG_MAX_VALUE_LENGTH 64
+
+// The maximum number of configuration entries that can be loaded.
+#define CFG_MAX_ENTRIES 64
+
 // Macros for retrieving configuration values.
 #define GET_CONFIG_IMPL(dest, dest_size, type, key, fallback) \
     get_config_value_##type(dest, dest_size, key, fallback)
 #define GET_CONFIG(dest, dest_size, bundle) \
     GET_CONFIG_IMPL(dest, dest_size, bundle)
+
+// Configuration field constants (terminal_shortcut).
+#define CFG_TYPE_TERMINAL_SHORTCUT str
+#define CFG_KEY_TERMINAL_SHORTCUT "terminal_shortcut"
+#define CFG_DEFAULT_TERMINAL_SHORTCUT "super+t"
+#define CFG_BUNDLE_TERMINAL_SHORTCUT \
+        CFG_TYPE_TERMINAL_SHORTCUT, \
+        CFG_KEY_TERMINAL_SHORTCUT, \
+        CFG_DEFAULT_TERMINAL_SHORTCUT
+
+// Configuration field constants (quit_shortcut).
+#define CFG_TYPE_QUIT_SHORTCUT str
+#define CFG_KEY_QUIT_SHORTCUT "quit_shortcut"
+#define CFG_DEFAULT_QUIT_SHORTCUT "super+shift+q"
+#define CFG_BUNDLE_QUIT_SHORTCUT \
+        CFG_TYPE_QUIT_SHORTCUT, \
+        CFG_KEY_QUIT_SHORTCUT, \
+        CFG_DEFAULT_QUIT_SHORTCUT
+
+// Configuration field constants (restart_shortcut).
+#define CFG_TYPE_RESTART_SHORTCUT str
+#define CFG_KEY_RESTART_SHORTCUT "restart_shortcut"
+#define CFG_DEFAULT_RESTART_SHORTCUT "super+shift+r"
+#define CFG_BUNDLE_RESTART_SHORTCUT \
+        CFG_TYPE_RESTART_SHORTCUT, \
+        CFG_KEY_RESTART_SHORTCUT, \
+        CFG_DEFAULT_RESTART_SHORTCUT
 
 // Configuration field constants (background_mode).
 #define CFG_TYPE_BACKGROUND_MODE str

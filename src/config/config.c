@@ -3,11 +3,6 @@
 #define CFG_DIRECTORY "~/.config/lime-os-window-manager"
 #define CFG_FILE_PATH "~/.config/lime-os-window-manager/config"
 
-#define CFG_MAX_LINE_LENGTH 256
-#define CFG_MAX_KEY_LENGTH 64
-#define CFG_MAX_VALUE_LENGTH 64
-#define CFG_MAX_ENTRIES 64
-
 typedef struct {
     char key[CFG_MAX_KEY_LENGTH];
     char value[CFG_MAX_VALUE_LENGTH];
@@ -19,17 +14,33 @@ static int config_entries_count = 0;
 // clang-format off
 static const char default_config[] =
     "# ---\n"
+    "# Shortcuts\n"
+    "# --- \n"
+    "\n"
+    "# The shortcut used to open a terminal window.\n"
+    CFG_KEY_TERMINAL_SHORTCUT "=" CFG_DEFAULT_TERMINAL_SHORTCUT "\n"
+    "\n"
+    "# The shortcut used to quit the window manager.\n"
+    CFG_KEY_QUIT_SHORTCUT "=" CFG_DEFAULT_QUIT_SHORTCUT "\n"
+    "\n"
+    "# The shortcut used to restart the window manager.\n"
+    CFG_KEY_RESTART_SHORTCUT "=" CFG_DEFAULT_RESTART_SHORTCUT "\n"
+    "\n"
+    "# ---\n"
     "# Background\n"
-    "# --- \n\n"
+    "# --- \n"
+    "\n"
     "# May either be 'solid' or 'image'.\n"
-    CFG_KEY_BACKGROUND_MODE "=" CFG_DEFAULT_BACKGROUND_MODE "\n\n"
+    CFG_KEY_BACKGROUND_MODE "=" CFG_DEFAULT_BACKGROUND_MODE "\n"
+    "\n"
     "# A hexadecimal representation of a color.\n"
     "# Used when " CFG_KEY_BACKGROUND_MODE " is set to 'solid'.\n"
-    CFG_KEY_BACKGROUND_COLOR "=" CFG_DEFAULT_BACKGROUND_COLOR "\n\n"
+    CFG_KEY_BACKGROUND_COLOR "=" CFG_DEFAULT_BACKGROUND_COLOR "\n"
+    "\n"
     "# A file path to a PNG background image.\n"
     "# Other file formats such as JPG are not supported.\n"
     "# Used when " CFG_KEY_BACKGROUND_MODE " is set to 'image'.\n"
-    CFG_KEY_BACKGROUND_IMAGE_PATH "=" CFG_DEFAULT_BACKGROUND_IMAGE_PATH "\n\n";
+    CFG_KEY_BACKGROUND_IMAGE_PATH "=" CFG_DEFAULT_BACKGROUND_IMAGE_PATH "\n";
 // clang-format on
 
 static void create_config_directory(const char *path)
