@@ -119,6 +119,10 @@ int x_key_name_to_symbol(const char *name, int *out_key)
     {
         *out_key = XK_Return;
     }
+    else if (strcmp(name_copy, "esc") == 0)
+    {
+        *out_key = XK_Escape;
+    }
     else
     {
         // The `XStringToKeysym()` function expects the first character to be

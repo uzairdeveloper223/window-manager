@@ -85,10 +85,10 @@ HANDLE(Initialize)
     x_key_names_to_symbols(config_value, '+', keys, MAX_SHORTCUT_KEYS);
     register_shortcut(CFG_KEY_TERMINAL_SHORTCUT, keys, MAX_SHORTCUT_KEYS);
 
-    // Register the quit shortcut.
-    GET_CONFIG(config_value, CFG_MAX_VALUE_LENGTH, CFG_BUNDLE_QUIT_SHORTCUT);
+    // Register the exit shortcut.
+    GET_CONFIG(config_value, CFG_MAX_VALUE_LENGTH, CFG_BUNDLE_EXIT_SHORTCUT);
     x_key_names_to_symbols(config_value, '+', keys, MAX_SHORTCUT_KEYS);
-    register_shortcut(CFG_KEY_QUIT_SHORTCUT, keys, MAX_SHORTCUT_KEYS);
+    register_shortcut(CFG_KEY_EXIT_SHORTCUT, keys, MAX_SHORTCUT_KEYS);
 
     // Register the restart shortcut.
     GET_CONFIG(config_value, CFG_MAX_VALUE_LENGTH, CFG_BUNDLE_RESTART_SHORTCUT);

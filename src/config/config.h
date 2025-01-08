@@ -46,14 +46,14 @@
         CFG_KEY_TERMINAL_COMMAND, \
         CFG_DEFAULT_TERMINAL_COMMAND
 
-// Configuration field constants (quit_shortcut).
-#define CFG_TYPE_QUIT_SHORTCUT str
-#define CFG_KEY_QUIT_SHORTCUT "quit_shortcut"
-#define CFG_DEFAULT_QUIT_SHORTCUT "super+shift+q"
-#define CFG_BUNDLE_QUIT_SHORTCUT \
-        CFG_TYPE_QUIT_SHORTCUT, \
-        CFG_KEY_QUIT_SHORTCUT, \
-        CFG_DEFAULT_QUIT_SHORTCUT
+// Configuration field constants (exit_shortcut).
+#define CFG_TYPE_EXIT_SHORTCUT str
+#define CFG_KEY_EXIT_SHORTCUT "exit_shortcut"
+#define CFG_DEFAULT_EXIT_SHORTCUT "super+escape"
+#define CFG_BUNDLE_EXIT_SHORTCUT \
+        CFG_TYPE_EXIT_SHORTCUT, \
+        CFG_KEY_EXIT_SHORTCUT, \
+        CFG_DEFAULT_EXIT_SHORTCUT
 
 // Configuration field constants (restart_shortcut).
 #define CFG_TYPE_RESTART_SHORTCUT str
