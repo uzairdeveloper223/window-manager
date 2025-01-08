@@ -10,6 +10,54 @@ bool is_library_available(const char *name)
     return True;
 }
 
+char** split_string(const char* string, const char* delimiter, int* out_count)
+{
+    // Make a copy of the provided string.
+    char* string_copy = strdup(string);
+    if (string_copy == NULL) return NULL;
+
+    // Count the number of tokens, using strtok().
+    int token_count = 0;
+    char* token = strtok(string_copy, delimiter);
+    while (token != NULL)
+    {
+        token_count++;
+        token = strtok(NULL, delimiter);
+    }
+
+    // Reset the string copy, so we can use strtok() again later.
+    strcpy(string_copy, string);
+
+    // Allocate memory for the array of tokens.
+    char** tokens = malloc((token_count + 1) * sizeof(char*));
+    if (tokens == NULL)
+    {
+        free(string_copy);
+        return NULL;
+    }
+
+    // Split the string and store the tokens in the array.
+    int index = 0;
+    token = strtok(string_copy, delimiter);
+    while (token != NULL)
+    {
+        tokens[index] = strdup(token);
+        token = strtok(NULL, delimiter);
+        index++;
+    }
+    tokens[index] = NULL; // Null-terminate the array.
+
+    // Assign the token count to the `out_count` parameter.
+    if (out_count != NULL) {
+        *out_count = token_count;
+    }
+
+    // Free the string copy from memory.
+    free(string_copy);
+
+    return tokens;
+}
+
 unsigned long rgb_to_hex(double r, double g, double b)
 {
     unsigned long hex = 0;

@@ -27,6 +27,7 @@ static const char default_config[] =
     "\n"
     "# The shortcut used to open a terminal window.\n"
     CFG_KEY_TERMINAL_SHORTCUT "=" CFG_DEFAULT_TERMINAL_SHORTCUT "\n"
+    CFG_KEY_TERMINAL_COMMAND "=" CFG_DEFAULT_TERMINAL_COMMAND "\n"
     "\n"
     "# The shortcut used to quit the window manager.\n"
     CFG_KEY_QUIT_SHORTCUT "=" CFG_DEFAULT_QUIT_SHORTCUT "\n"
@@ -114,7 +115,7 @@ static void parse_config_file(const char *path)
             continue; // Ignore comments.
         }
 
-        if (sscanf(line, "%63[^=]=%63s", key, value) == 2)
+        if (sscanf(line, "%63[^=]=%63[^\n]", key, value) == 2)
         {
             strncpy(config_entries[config_entries_count].key, key, CFG_MAX_KEY_LENGTH);
             strncpy(config_entries[config_entries_count].value, value, CFG_MAX_VALUE_LENGTH);

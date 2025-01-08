@@ -15,6 +15,20 @@
 bool is_library_available(const char *name);
 
 /**
+ * Splits a string by a specified delimiter.
+ *
+ * @param string The string to split.
+ * @param delimiter The delimiter to split the string by.
+ * @param out_count Pointer to an integer to store the token count, or `NULL`.
+ * 
+ * @return A null-terminated array of strings, or `NULL` on failure.
+ * 
+ * @warning The caller is responsible for freeing the memory allocated for the
+ * returned array and its elements.
+ */
+char** split_string(const char* string, const char* delimiter, int* out_count);
+
+/**
  * Converts RGB values to a hexadecimal representation.
  *
  * @param r Red channel, in the range [0.0, 1.0].

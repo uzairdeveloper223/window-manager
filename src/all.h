@@ -17,6 +17,7 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include <dlfcn.h>
+#include <signal.h>
 #include <time.h>
 
 #include "limits.h"
@@ -27,6 +28,7 @@
 #include "shortcuts/shortcuts.h"
 #include "shortcuts/input.h"
 #include "shortcuts/quit.h"
+#include "shortcuts/terminal.h"
 
 #include "ewmh/ewmh.h"
 #include "ewmh/client_list.h"

@@ -31,11 +31,20 @@
 // Configuration field constants (terminal_shortcut).
 #define CFG_TYPE_TERMINAL_SHORTCUT str
 #define CFG_KEY_TERMINAL_SHORTCUT "terminal_shortcut"
-#define CFG_DEFAULT_TERMINAL_SHORTCUT "super+t"
+#define CFG_DEFAULT_TERMINAL_SHORTCUT "super+enter"
 #define CFG_BUNDLE_TERMINAL_SHORTCUT \
         CFG_TYPE_TERMINAL_SHORTCUT, \
         CFG_KEY_TERMINAL_SHORTCUT, \
         CFG_DEFAULT_TERMINAL_SHORTCUT
+
+// Configuration field constants (terminal_command).
+#define CFG_TYPE_TERMINAL_COMMAND str
+#define CFG_KEY_TERMINAL_COMMAND "terminal_command"
+#define CFG_DEFAULT_TERMINAL_COMMAND "xterm"
+#define CFG_BUNDLE_TERMINAL_COMMAND \
+        CFG_TYPE_TERMINAL_COMMAND, \
+        CFG_KEY_TERMINAL_COMMAND, \
+        CFG_DEFAULT_TERMINAL_COMMAND
 
 // Configuration field constants (quit_shortcut).
 #define CFG_TYPE_QUIT_SHORTCUT str
