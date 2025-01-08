@@ -26,6 +26,7 @@
 
 #include "shortcuts/shortcuts.h"
 #include "shortcuts/input.h"
+#include "shortcuts/quit.h"
 
 #include "ewmh/ewmh.h"
 #include "ewmh/client_list.h"
