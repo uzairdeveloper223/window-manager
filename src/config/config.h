@@ -49,7 +49,7 @@
 // Configuration field constants (exit_shortcut).
 #define CFG_TYPE_EXIT_SHORTCUT str
 #define CFG_KEY_EXIT_SHORTCUT "exit_shortcut"
-#define CFG_DEFAULT_EXIT_SHORTCUT "super+escape"
+#define CFG_DEFAULT_EXIT_SHORTCUT "super+shift+e"
 #define CFG_BUNDLE_EXIT_SHORTCUT \
         CFG_TYPE_EXIT_SHORTCUT, \
         CFG_KEY_EXIT_SHORTCUT, \
