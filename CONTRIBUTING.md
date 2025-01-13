@@ -26,6 +26,7 @@ When conflicts arise between these sections, always follow the repository-specif
 •&emsp;[Naming Convention](#naming-convention)  
 &emsp;•&emsp;[Function Naming](#function-naming)  
 &emsp;•&emsp;[Variable Naming](#variable-naming)  
+&emsp;•&emsp;[Parameter Naming](#parameter-naming)  
 &emsp;•&emsp;[Type Naming](#type-naming)  
 &emsp;•&emsp;[Macro Naming](#macro-naming)  
 &emsp;•&emsp;[File Naming](#file-naming)  
@@ -174,6 +175,26 @@ All variable names in this repository must adhere to the _snake_case_ naming con
    Examples:  
    **✓**  `file_descriptor`  
    **𐄂**  `fd`  
+
+#### Parameter Naming  
+
+All parameter names in this repository must adhere to the _snake_case_ naming convention. Consider these guidelines when naming a parameter:  
+
+1. **Descriptive Names**  
+   •&emsp;Parameter names must clearly indicate their purpose.  
+   •&emsp;Always avoid single-character names.  
+   •&emsp;Avoid abbreviations unless they are standard (e.g. `id` for identifier).  
+
+   Examples:  
+   **✓**  `file_descriptor`  
+   **𐄂**  `fd`  
+
+2. **Output Parameters**  
+   Prefix pointer parameters with `out_` when they are used to return values from a function.
+   
+   Examples:  
+   **✓**  `void get_name(char *out_name, int name_size)`  
+   **𐄂**  `void get_name(char *name, int name_size)`  
 
 #### Type Naming
 
