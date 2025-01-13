@@ -33,10 +33,6 @@ int main()
         exit(EXIT_FAILURE);
     }
 
-    // Set the default cursor.
-    Cursor cursor = XCreateFontCursor(display, XC_left_ptr);
-    XDefineCursor(display, DefaultRootWindow(display), cursor);
-
     // Assign a custom error handler to Xlib.
     XSetErrorHandler(x_error_handler);
 

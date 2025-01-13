@@ -29,6 +29,15 @@ bool is_library_available(const char *name);
 char** split_string(const char* string, const char* delimiter, int* out_count);
 
 /**
+ * Generates a unique ID from a string.
+ *
+ * @param string The string to generate the ID from.
+ * 
+ * @return The generated ID, ranging from 0 to 65535.
+ */
+unsigned int string_to_id(const char *string);
+
+/**
  * Converts a framerate to a throttle time in milliseconds.
  * 
  * @param framerate The framerate to convert.

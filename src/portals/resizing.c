@@ -1,6 +1,6 @@
 #include "../all.h"
 
-#define PORTAL_RESIZE_AREA_SIZE 20
+#define PORTAL_RESIZE_AREA_SIZE 10
 
 static Portal *resized_portal = NULL;
 static bool is_resizing = false;
@@ -133,4 +133,24 @@ HANDLE(GlobalMotionNotify)
     if (is_resizing == false) return;
 
     update_resizing_portal(_event->x_root, _event->y_root, _event->time);
+}
+
+HANDLE(GlobalMotionNotify)
+{
+    XMotionEvent *_event = &event->xmotion;
+
+    // Determine whether the mouse is in the resize area of a portal.
+    Portal* portal = find_portal(_event->window);
+    bool is_in_resize_area = portal != NULL && is_portal_resize_area(portal, _event->x, _event->y);
+
+    // Update the marker.
+    unsigned int marker_id = string_to_id("resizing_portal");
+    if (is_in_resize_area || is_resizing)
+    {
+        add_marker(display, marker_id, XC_bottom_right_corner, true);
+    }
+    else
+    {
+        remove_marker(display, marker_id);
+    }
 }

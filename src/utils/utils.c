@@ -58,6 +58,17 @@ char** split_string(const char* string, const char* delimiter, int* out_count)
     return tokens;
 }
 
+unsigned int string_to_id(const char *string)
+{
+    int char_value;
+    unsigned int id = 1 << 12;
+    while ((char_value = *string++))
+    {
+        id = ((id << 4) + id) + char_value;
+    }
+    return id % (1 << 16);
+}
+
 int framerate_to_throttle_ms(int framerate)
 {
     if (framerate <= 0) return 1;

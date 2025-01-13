@@ -113,3 +113,23 @@ HANDLE(GlobalMotionNotify)
 
     update_dragging_portal(_event->x_root, _event->y_root, _event->time);
 }
+
+HANDLE(GlobalMotionNotify)
+{
+    XMotionEvent *_event = &event->xmotion;
+
+    // Determine whether the mouse is in the frame area of a portal.
+    Portal* portal = find_portal(_event->window);
+    bool is_in_frame_area = portal != NULL && is_portal_frame_area(portal, _event->x, _event->y);
+
+    // Update the marker.
+    unsigned int marker_id = string_to_id("dragging_portal");
+    if (is_in_frame_area || is_dragging)
+    {
+        add_marker(display, marker_id, XC_hand1, true);
+    }
+    else
+    {
+        remove_marker(display, marker_id);
+    }
+}

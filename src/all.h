@@ -25,6 +25,7 @@
 
 #include "config/config.h"
 #include "background/background.h"
+#include "markers/markers.h"
 
 #include "shortcuts/shortcuts.h"
 #include "shortcuts/input.h"
