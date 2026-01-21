@@ -1,10 +1,11 @@
 #pragma once
 #include "../all.h"
 
-/**
- * The height of the title bar in pixels.
- */
+/** The height of the title bar in pixels. */
 #define PORTAL_TITLE_BAR_HEIGHT 15
+
+/** The width of the frame border in pixels. */
+#define PORTAL_BORDER_WIDTH 1
 
 /** The minimum width of a portal in pixels. */
 #define MINIMUM_PORTAL_WIDTH 64

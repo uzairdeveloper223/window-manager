@@ -74,8 +74,8 @@ void create_portal_frame(Portal *portal)
         display,                // Display
         portal->client_window,  // Window
         portal->frame_window,   // Parent window
-        0,                      // X (Relative to parent)
-        PORTAL_TITLE_BAR_HEIGHT // Y (Relative to parent)
+        0 + PORTAL_BORDER_WIDTH,    // X (Relative to parent)
+        0 + PORTAL_TITLE_BAR_HEIGHT // Y (Relative to parent)
     );
 
     // Set _NET_FRAME_EXTENTS to inform the client about decoration sizes.
@@ -83,10 +83,10 @@ void create_portal_frame(Portal *portal)
     // (e.g., for drag and drop operations).
     Atom _NET_FRAME_EXTENTS = XInternAtom(display, "_NET_FRAME_EXTENTS", False);
     unsigned long extents[4] = {
-        0,                        // Left
-        0,                        // Right
-        PORTAL_TITLE_BAR_HEIGHT,  // Top (title bar)
-        0                         // Bottom
+        PORTAL_BORDER_WIDTH,      // Left
+        PORTAL_BORDER_WIDTH,      // Right
+        PORTAL_TITLE_BAR_HEIGHT,  // Top
+        PORTAL_BORDER_WIDTH       // Bottom
     };
     XChangeProperty(
         display,
@@ -122,7 +122,7 @@ void draw_portal_frame(Portal *portal)
 
     // Draw the border around the window.
     cairo_set_source_rgb(cr, 0.8, 0.8, 0.8);
-    cairo_set_line_width(cr, 2);
+    cairo_set_line_width(cr, PORTAL_BORDER_WIDTH * 2);
     cairo_rectangle(cr, 0, 0, width, height);
     cairo_stroke(cr);
 }

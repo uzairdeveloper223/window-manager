@@ -204,8 +204,8 @@ void initialize_portal(Portal *portal)
         // is created with the correct position and dimensions.
         portal->x_root = client_x_root;
         portal->y_root = client_y_root;
-        portal->width = client_width;
-        portal->height = client_height + PORTAL_TITLE_BAR_HEIGHT;
+        portal->width = client_width + 2 * PORTAL_BORDER_WIDTH;
+        portal->height = client_height + PORTAL_TITLE_BAR_HEIGHT + PORTAL_BORDER_WIDTH;
 
         create_portal_frame(portal);
     }
@@ -366,7 +366,7 @@ void move_portal(Portal *portal, int x_root, int y_root)
                 .display = display,
                 .event = client_window,
                 .window = client_window,
-                .x = x_root,
+                .x = x_root + PORTAL_BORDER_WIDTH,
                 .y = y_root + PORTAL_TITLE_BAR_HEIGHT,
                 .width = client_width,
                 .height = client_height,
@@ -410,8 +410,11 @@ void resize_portal(Portal *portal, unsigned int width, unsigned int height)
         if (is_portal_frame_valid(portal))
         {
             // Resize both the frame and client windows.
+            // Client dimensions account for borders on all sides.
             XResizeWindow(display, frame_window, width, height);
-            XResizeWindow(display, client_window, width, max(1, height - PORTAL_TITLE_BAR_HEIGHT));
+            XResizeWindow(display, client_window,
+                max(1, width - 2 * PORTAL_BORDER_WIDTH),
+                max(1, height - PORTAL_TITLE_BAR_HEIGHT - PORTAL_BORDER_WIDTH));
         }
         else
         {
@@ -451,8 +454,8 @@ void resize_portal(Portal *portal, unsigned int width, unsigned int height)
                 .window = client_window,
                 .x = client_x_root,
                 .y = client_y_root,
-                .width = max(1, width),
-                .height = max(1, height - PORTAL_TITLE_BAR_HEIGHT),
+                .width = max(1, width - 2 * PORTAL_BORDER_WIDTH),
+                .height = max(1, height - PORTAL_TITLE_BAR_HEIGHT - PORTAL_BORDER_WIDTH),
                 .border_width = 0,
                 .above = None,
                 .override_redirect = False
@@ -510,10 +513,10 @@ void synchronize_portal(Portal *portal)
 
     // Calculate the new portal geometry.
     bool is_framed = is_portal_frame_valid(portal);
-    int portal_x_root = client_x_root;
+    int portal_x_root = client_x_root + (is_framed ? -PORTAL_BORDER_WIDTH : 0);
     int portal_y_root = client_y_root + (is_framed ? -PORTAL_TITLE_BAR_HEIGHT : 0);
-    unsigned int portal_width = max(1, client_width);
-    unsigned int portal_height = max(1, client_height + (is_framed ? PORTAL_TITLE_BAR_HEIGHT : 0));
+    unsigned int portal_width = max(1, client_width + (is_framed ? 2 * PORTAL_BORDER_WIDTH : 0));
+    unsigned int portal_height = max(1, client_height + (is_framed ? PORTAL_TITLE_BAR_HEIGHT + PORTAL_BORDER_WIDTH : 0));
 
     // Move the portal if the position has changed and the portal is not framed.
     // Framed portals have their position controlled by the WM, not the client.
