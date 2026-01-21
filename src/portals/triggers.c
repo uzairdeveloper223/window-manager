@@ -1,7 +1,9 @@
 #include "../all.h"
 
-#define PORTAL_TRIGGER_SIZE 15
-#define PORTAL_TRIGGER_PADDING 5
+#define PORTAL_TRIGGER_SIZE 16
+#define PORTAL_TRIGGER_PADDING 6
+
+#define PORTAL_TRIGGER_ICON_SIZE 6
 
 typedef enum {
     TRIGGER_CLOSE,
@@ -13,14 +15,14 @@ static void calc_portal_trigger_pos(Portal *portal, PortalTriggerType type, int 
     // Calculate starting position.
     int x = portal->width - PORTAL_TRIGGER_PADDING - PORTAL_TRIGGER_SIZE;
     int y = (PORTAL_TITLE_BAR_HEIGHT - PORTAL_TRIGGER_SIZE) / 2;
-    
-    // Calculate the position based on the trigger type.
-    if(type == TRIGGER_CLOSE)
+
+    // Adjust based on trigger type.
+    if (type == TRIGGER_CLOSE)
     {
         *out_x = x;
         *out_y = y;
     }
-    if(type == TRIGGER_ARRANGE)
+    if (type == TRIGGER_ARRANGE)
     {
         *out_x = x - PORTAL_TRIGGER_SIZE - PORTAL_TRIGGER_PADDING;
         *out_y = y;
@@ -50,31 +52,29 @@ static void draw_portal_trigger(Portal *portal, PortalTriggerType type)
 
     // Define the drawing stroke style.
     cairo_set_source_rgb(cr, 1, 1, 1);
-    cairo_set_line_width(cr, 2);
 
     // Define the drawing path based on the trigger type.
     if (type == TRIGGER_CLOSE)
     {
+        // Center the X within the trigger area.
+        int offset = (PORTAL_TRIGGER_SIZE - PORTAL_TRIGGER_ICON_SIZE) / 2;
+        cairo_set_line_width(cr, 1);
         cairo_move_to(cr,
-            trigger_x + PORTAL_TRIGGER_PADDING,
-            trigger_y + PORTAL_TRIGGER_PADDING);
+            trigger_x + offset,
+            trigger_y + offset);
         cairo_line_to(cr,
-            trigger_x + PORTAL_TRIGGER_SIZE - PORTAL_TRIGGER_PADDING, 
-            trigger_y + PORTAL_TRIGGER_SIZE - PORTAL_TRIGGER_PADDING);
+            trigger_x + offset + PORTAL_TRIGGER_ICON_SIZE,
+            trigger_y + offset + PORTAL_TRIGGER_ICON_SIZE);
         cairo_move_to(cr,
-            trigger_x + PORTAL_TRIGGER_SIZE - PORTAL_TRIGGER_PADDING, 
-            trigger_y + PORTAL_TRIGGER_PADDING);
+            trigger_x + offset + PORTAL_TRIGGER_ICON_SIZE,
+            trigger_y + offset);
         cairo_line_to(cr,
-            trigger_x + PORTAL_TRIGGER_PADDING, 
-            trigger_y + PORTAL_TRIGGER_SIZE - PORTAL_TRIGGER_PADDING);
+            trigger_x + offset,
+            trigger_y + offset + PORTAL_TRIGGER_ICON_SIZE);
     }
     if (type == TRIGGER_ARRANGE)
     {
-        cairo_rectangle(cr,
-            trigger_x + PORTAL_TRIGGER_PADDING, 
-            trigger_y + PORTAL_TRIGGER_PADDING,
-            (PORTAL_TRIGGER_SIZE - (2 * PORTAL_TRIGGER_PADDING)) * 1.2,
-            PORTAL_TRIGGER_SIZE - (2 * PORTAL_TRIGGER_PADDING));
+        // TODO: Implement arrange trigger drawing.
     }
 
     // Draw the defined path.

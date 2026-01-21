@@ -39,28 +39,26 @@ static cairo_surface_t *load_background_image(Display *display, const char *file
     return scaled_image;
 }
 
-static void draw_background_image(cairo_t *cr, cairo_surface_t *png_surface)
+void draw_background(cairo_t *cr)
 {
-    if (cr == NULL || xlib_surface == NULL || png_surface == NULL)
+    // Ensure the Cairo context is valid.
+    if (cr == NULL)
         return;
 
-    cairo_set_source_surface(cr, png_surface, 0, 0);
-    cairo_paint(cr);
-}
-
-static void draw_background_solid(cairo_t *cr, unsigned long color)
-{
-    if (cr == NULL || xlib_surface == NULL)
-        return;
-
-    // Convert the color to RGB.
-    double r, g, b = 0;
-    hex_to_rgb(color, &r, &g, &b);
-
-    // Draw the background.
-    cairo_set_source_rgb(cr, r, g, b);
-    cairo_fill(cr);
-    cairo_paint(cr);
+    // Draw the background image if configured.
+    if (strcmp(cfg_background_mode, "image") == 0 && png_surface != NULL)
+    {
+        cairo_set_source_surface(cr, png_surface, 0, 0);
+        cairo_paint(cr);
+    }
+    else
+    {
+        // Fall back to solid color background.
+        double r, g, b;
+        hex_to_rgb(cfg_background_color, &r, &g, &b);
+        cairo_set_source_rgb(cr, r, g, b);
+        cairo_paint(cr);
+    }
 }
 
 HANDLE(Initialize)
@@ -98,13 +96,6 @@ HANDLE(Expose)
 
     if (_event->window == root_window && _event->count == 0)
     {
-        if (strcmp(cfg_background_mode, "image") == 0)
-        {
-            draw_background_image(cr, png_surface);
-        }
-        else
-        {
-            draw_background_solid(cr, cfg_background_color);
-        }
+        draw_background(cr);
     }
 }

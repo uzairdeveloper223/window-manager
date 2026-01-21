@@ -17,14 +17,14 @@ void draw_portal_title(Portal *portal)
 
     // Set the font and color.
     cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
-    cairo_select_font_face(cr, "Sans", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
+    cairo_select_font_face(cr, "Sans", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
     cairo_set_font_size(cr, 10.0);
 
     // Determine the position for the title text.
     cairo_text_extents_t title_extents;
     cairo_text_extents(cr, portal->title, &title_extents);
-    double title_x = (width - title_extents.width) / 2;
-    double title_y = (PORTAL_TITLE_BAR_HEIGHT + title_extents.height) / 2;
+    double title_x = (width - title_extents.width) / 2 - title_extents.x_bearing;
+    double title_y = (PORTAL_TITLE_BAR_HEIGHT - title_extents.height) / 2 - title_extents.y_bearing;
     cairo_move_to(cr, title_x, title_y);
 
     // Draw the title text.

@@ -1,12 +1,11 @@
 /**
- * XComposite-based compositor for the window manager.
+ * This code is responsible for window compositing using the XComposite
+ * extension combined with Cairo for rendering.
  *
- * This module handles window compositing using the XComposite extension
- * combined with Cairo for rendering. It redirects all window rendering
- * off-screen and then composites them back to the root window.
- *
- * Double-buffering is used to prevent flicker: all drawing is done to an
- * off-screen X11 pixmap first, then copied to the root window in one operation.
+ * It redirects all window rendering off-screen and then composites them back
+ * to the root window. Double-buffering is used to prevent flicker: all drawing
+ * is done to an off-screen X11 pixmap first, then copied to the root window in
+ * one operation.
  */
 
 #include "../all.h"
@@ -138,8 +137,29 @@ static void draw_portal(Portal *portal)
     }
 
     // Draw the window surface to the off-screen buffer.
-    cairo_set_source_surface(buffer_cr, window_surface, portal->x_root, portal->y_root);
-    cairo_paint(buffer_cr);
+    if (has_frame)
+    {
+        // Draw drop shadow.
+        draw_portal_shadow(buffer_cr, portal);
+
+        // Clip to rounded corners and paint portal content.
+        cairo_save(buffer_cr);
+        cairo_rounded_rectangle(buffer_cr, portal->x_root, portal->y_root,
+            portal->width, portal->height, PORTAL_CORNER_RADIUS);
+        cairo_clip(buffer_cr);
+        cairo_set_source_surface(buffer_cr, window_surface, portal->x_root, portal->y_root);
+        cairo_paint(buffer_cr);
+        cairo_restore(buffer_cr);
+
+        // Draw borders (includes luminance sampling).
+        draw_portal_border(buffer_cr, portal, pixmap);
+    }
+    else
+    {
+        // No frame, just paint the window content directly.
+        cairo_set_source_surface(buffer_cr, window_surface, portal->x_root, portal->y_root);
+        cairo_paint(buffer_cr);
+    }
 
     // Clear the source to release Cairo's reference to window_surface.
     cairo_set_source_rgb(buffer_cr, 0, 0, 0);
@@ -155,13 +175,8 @@ static void compositor_redraw()
 
     Display *display = DefaultDisplay;
 
-    // Clear the off-screen buffer with the background color.
-    unsigned long bg_color;
-    GET_CONFIG(&bg_color, sizeof(bg_color), CFG_BUNDLE_BACKGROUND_COLOR);
-    double r, g, b;
-    hex_to_rgb(bg_color, &r, &g, &b);
-    cairo_set_source_rgb(buffer_cr, r, g, b);
-    cairo_paint(buffer_cr);
+    // Draw the background to the off-screen buffer.
+    draw_background(buffer_cr);
 
     // Get sorted portals and draw them to the buffer (back to front).
     unsigned int portal_count = 0;

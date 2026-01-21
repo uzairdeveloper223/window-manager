@@ -74,8 +74,8 @@ void create_portal_frame(Portal *portal)
         display,                // Display
         portal->client_window,  // Window
         portal->frame_window,   // Parent window
-        0 + PORTAL_BORDER_WIDTH,    // X (Relative to parent)
-        0 + PORTAL_TITLE_BAR_HEIGHT // Y (Relative to parent)
+        0,                      // X (Relative to parent)
+        PORTAL_TITLE_BAR_HEIGHT // Y (Relative to parent)
     );
 
     // Set _NET_FRAME_EXTENTS to inform the client about decoration sizes.
@@ -83,10 +83,10 @@ void create_portal_frame(Portal *portal)
     // (e.g., for drag and drop operations).
     Atom _NET_FRAME_EXTENTS = XInternAtom(display, "_NET_FRAME_EXTENTS", False);
     unsigned long extents[4] = {
-        PORTAL_BORDER_WIDTH,      // Left
-        PORTAL_BORDER_WIDTH,      // Right
+        0,                        // Left
+        0,                        // Right
         PORTAL_TITLE_BAR_HEIGHT,  // Top
-        PORTAL_BORDER_WIDTH       // Bottom
+        0                         // Bottom
     };
     XChangeProperty(
         display,
@@ -105,13 +105,26 @@ void draw_portal_frame(Portal *portal)
     cairo_t *cr = portal->frame_cr;
     unsigned int width = portal->width;
     unsigned int height = portal->height;
+    double radius = PORTAL_CORNER_RADIUS;
 
     // Resize the Cairo surface.
     cairo_xlib_surface_set_size(cairo_get_target(cr), width, height);
 
-    // Draw title bar.
-    cairo_set_source_rgb(cr, 0.1, 0.1, 0.1);
-    cairo_rectangle(cr, 0, 0, width, PORTAL_TITLE_BAR_HEIGHT);
+    // Clear the frame with transparency to avoid artifacts.
+    cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
+    cairo_paint(cr);
+    cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
+
+    // Draw title bar with rounded top corners.
+    cairo_set_source_rgb(cr, 0.141, 0.141, 0.141);
+    cairo_move_to(cr, radius, 0);
+    cairo_line_to(cr, width - radius, 0);
+    cairo_arc(cr, width - radius, radius, radius, -PI / 2, 0);
+    cairo_line_to(cr, width, PORTAL_TITLE_BAR_HEIGHT);
+    cairo_line_to(cr, 0, PORTAL_TITLE_BAR_HEIGHT);
+    cairo_line_to(cr, 0, radius);
+    cairo_arc(cr, radius, radius, radius, PI, 3 * PI / 2);
+    cairo_close_path(cr);
     cairo_fill(cr);
 
     // Draw title within the title bar.
@@ -119,12 +132,6 @@ void draw_portal_frame(Portal *portal)
 
     // Draw triggers within the title bar.
     draw_portal_triggers(portal);
-
-    // Draw the border around the window.
-    cairo_set_source_rgb(cr, 0.8, 0.8, 0.8);
-    cairo_set_line_width(cr, PORTAL_BORDER_WIDTH * 2);
-    cairo_rectangle(cr, 0, 0, width, height);
-    cairo_stroke(cr);
 }
 
 bool is_portal_frame_valid(Portal *portal)

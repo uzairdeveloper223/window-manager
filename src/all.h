@@ -28,29 +28,26 @@
 #include <signal.h>
 #include <time.h>
 
-#include "limits.h"
-
+#include "constants.h"
 #include "config/config.h"
 #include "background/background.h"
 #include "markers/markers.h"
-
 #include "compositor/compositor.h"
-
 #include "shortcuts/shortcuts.h"
 #include "shortcuts/terminal.h"
 #include "shortcuts/exit.h"
 #include "shortcuts/close.h"
-
 #include "utils/utils.h"
 #include "utils/xlib.h"
 #include "utils/xinput.h"
 #include "utils/log.h"
-
+#include "utils/cairo.h"
 #include "ewmh/ewmh.h"
 #include "ewmh/client_list.h"
 #include "ewmh/active_window.h"
-
 #include "portals/portals.h"
+#include "compositor/shadow.h"
+#include "compositor/border.h"
 #include "portals/frames.h"
 #include "portals/clients.h"
 #include "portals/input.h"
@@ -59,7 +56,6 @@
 #include "portals/dragging.h"
 #include "portals/resizing.h"
 #include "portals/title.h"
-
 #include "events/events.h"
 #include "events/handlers.h"
 #include "events/xinput.h"

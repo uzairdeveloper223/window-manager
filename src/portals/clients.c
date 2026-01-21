@@ -140,10 +140,10 @@ HANDLE(ConfigureRequest)
             .display = display,
             .event = client_window,
             .window = client_window,
-            .x = portal->x_root + PORTAL_BORDER_WIDTH,
+            .x = portal->x_root,
             .y = portal->y_root + PORTAL_TITLE_BAR_HEIGHT,
-            .width = max(1, portal->width - 2 * PORTAL_BORDER_WIDTH),
-            .height = max(1, portal->height - PORTAL_TITLE_BAR_HEIGHT - PORTAL_BORDER_WIDTH),
+            .width = max(1, portal->width),
+            .height = max(1, portal->height - PORTAL_TITLE_BAR_HEIGHT),
             .border_width = 0,
             .above = None,
             .override_redirect = False
@@ -183,10 +183,9 @@ HANDLE(ConfigureNotify)
     if (is_portal_frame_valid(portal))
     {
         // Move back only if the position is incorrect.
-        if (_event->x != 0 + PORTAL_BORDER_WIDTH ||
-            _event->y != 0 + PORTAL_TITLE_BAR_HEIGHT)
+        if (_event->x != 0 || _event->y != PORTAL_TITLE_BAR_HEIGHT)
         {
-            XMoveWindow(display, portal->client_window, PORTAL_BORDER_WIDTH, PORTAL_TITLE_BAR_HEIGHT);
+            XMoveWindow(display, portal->client_window, 0, PORTAL_TITLE_BAR_HEIGHT);
         }
     }
 

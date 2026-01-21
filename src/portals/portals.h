@@ -2,10 +2,13 @@
 #include "../all.h"
 
 /** The height of the title bar in pixels. */
-#define PORTAL_TITLE_BAR_HEIGHT 15
+#define PORTAL_TITLE_BAR_HEIGHT 26
 
 /** The width of the frame border in pixels. */
 #define PORTAL_BORDER_WIDTH 1
+
+/** The radius of the rounded corners in pixels. */
+#define PORTAL_CORNER_RADIUS 6
 
 /** The minimum width of a portal in pixels. */
 #define MINIMUM_PORTAL_WIDTH 64
