@@ -14,6 +14,9 @@ static PortalRegistry registry = {
     .capacity = 0
 };
 
+// Tracks the top portal to skip redundant raise_portal calls.
+static Portal *top_portal = NULL;
+
 Portal *create_portal(Window client_window)
 {
     // Choose which client window events we should listen for.
@@ -102,6 +105,9 @@ void destroy_portal(Portal *portal)
         destroy_portal_frame(portal);
         if (is_portal_frame_valid(portal)) return;
     }
+
+    // Clear top portal tracking if this was it.
+    if (top_portal == portal) top_portal = NULL;
 
     // Call all event handlers of the PortalDestroyed event.
     // This is done before unregistering so handlers can access the portal.
@@ -546,23 +552,32 @@ void synchronize_portal(Portal *portal)
     }
 }
 
+Portal *get_top_portal()
+{
+    return top_portal;
+}
+
 void raise_portal(Portal *portal)
 {
-    Display *display = DefaultDisplay;
-    Window client_window = portal->client_window;
-    Window frame_window = portal->frame_window;
-
     // Ensure the portal has been initialized.
     if (portal->initialized == false) return;
 
+    // Skip if already on top (sort_portals is expensive).
+    if (top_portal == portal) return;
+
     // Determine which window to raise.
-    Window target_window = (is_portal_frame_valid(portal)) ? frame_window : client_window;
+    Window target_window = (is_portal_frame_valid(portal))
+        ? portal->frame_window
+        : portal->client_window;
 
     // Raise the portal windows.
-    XRaiseWindow(display, target_window);
+    XRaiseWindow(DefaultDisplay, target_window);
 
     // Re-sort the portals.
     sort_portals();
+
+    // Track the top portal.
+    top_portal = portal;
 
     // Call all event handlers of the PortalRaised event.
     call_event_handlers((Event*)&(PortalRaisedEvent){
@@ -618,6 +633,9 @@ void map_portal(Portal *portal)
 
     // Mark the portal as mapped.
     portal->mapped = true;
+
+    // XMapWindow puts the window on top, so update our tracking.
+    if (!portal->override_redirect) top_portal = portal;
 
     // Apply WM_NORMAL_HINTS position if specified by the client, or center
     // the portal if position is (0,0) or not specified. Override-redirect

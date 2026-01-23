@@ -86,7 +86,15 @@ void resize_portal(Portal *portal, unsigned int width, unsigned int height);
 void synchronize_portal(Portal *portal);
 
 /**
+ * Returns the top portal in the stacking order.
+ *
+ * @return The top portal, or NULL if no portal has been raised.
+ */
+Portal *get_top_portal();
+
+/**
  * Raises a portal to the top of the stacking order.
+ * Skipped if portal is already on top (optimization).
  *
  * @param portal The portal to raise.
  */
