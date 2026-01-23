@@ -120,6 +120,27 @@ bool x_window_exists(Display *display, Window window)
     return XGetWindowAttributes(display, window, &(XWindowAttributes){0}) != 0;
 }
 
+unsigned int x_keysym_to_modifier(KeySym keysym)
+{
+    switch (keysym)
+    {
+        case XK_Shift_L:
+        case XK_Shift_R:
+            return ShiftMask;
+        case XK_Control_L:
+        case XK_Control_R:
+            return ControlMask;
+        case XK_Alt_L:
+        case XK_Alt_R:
+            return Mod1Mask;
+        case XK_Super_L:
+        case XK_Super_R:
+            return Mod4Mask;
+        default:
+            return 0;
+    }
+}
+
 int x_key_name_to_symbol(const char *name, int *out_key)
 {
     // Create a copy of the provided key name string.
@@ -204,7 +225,8 @@ int x_key_names_to_symbols(char *names, const char delimiter, int *out_keys, int
     }
     
     // Split the key names string by the delimiter and iterate over each token.
-    char *token = strtok(names_copy, &delimiter);
+    char delimiter_str[2] = {delimiter, '\0'};
+    char *token = strtok(names_copy, delimiter_str);
     for (int i = 0; i < keys_size; i++)
     {
         // If we ran out of tokens, but the loop isn't completed yet, fill the 
@@ -222,7 +244,7 @@ int x_key_names_to_symbols(char *names, const char delimiter, int *out_keys, int
         out_keys[i] = key;
 
         // Prepare for the next iteration.
-        token = strtok(NULL, &delimiter);
+        token = strtok(NULL, delimiter_str);
     }
 
     // Free the duplicate string.

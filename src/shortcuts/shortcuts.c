@@ -7,6 +7,44 @@ typedef struct {
 
 static Shortcut shortcuts[MAX_SHORTCUTS];
 
+static void grab_shortcut_keys(int *keys, int keys_size)
+{
+    Display *display = DefaultDisplay;
+    Window root = DefaultRootWindow(display);
+
+    // Go through the keys and separate modifiers from the main key.
+    unsigned int modifiers = 0;
+    KeyCode keycode = 0;
+    for (int i = 0; i < keys_size; i++)
+    {
+        if (keys[i] == 0 || keys[i] == NoSymbol) continue;
+
+        unsigned int mod = x_keysym_to_modifier(keys[i]);
+        if (mod != 0)
+        {
+            modifiers |= mod;
+        }
+        else
+        {
+            // Non-modifier key - this is the main key to grab.
+            keycode = XKeysymToKeycode(display, keys[i]);
+        }
+    }
+
+    // If no valid keycode was found, return early.
+    if (keycode == 0) return;
+
+    // Grab the key combination on the root window.
+    // GrabModeAsync allows other events to continue processing.
+    XGrabKey(display, keycode, modifiers, root, True, GrabModeAsync, GrabModeAsync);
+
+    // Also grab with NumLock (Mod2Mask) and CapsLock (LockMask) variations
+    // to ensure shortcuts work regardless of these lock states.
+    XGrabKey(display, keycode, modifiers | Mod2Mask, root, True, GrabModeAsync, GrabModeAsync);
+    XGrabKey(display, keycode, modifiers | LockMask, root, True, GrabModeAsync, GrabModeAsync);
+    XGrabKey(display, keycode, modifiers | Mod2Mask | LockMask, root, True, GrabModeAsync, GrabModeAsync);
+}
+
 static void register_shortcut(const char *name, int *keys, int keys_size)
 {
     // Ensure the parameters are within the expected limits.
@@ -44,7 +82,11 @@ static void register_shortcut(const char *name, int *keys, int keys_size)
     if (!registered)
     {
         LOG_WARNING("Shortcut registry is full! Could not register \"%s\".", name);
+        return;
     }
+
+    // Grab the key combination to prevent it from propagating to clients.
+    grab_shortcut_keys(keys, keys_size);
 }
 
 int find_shortcut(int *keys, int keys_size, char *out_name, int name_size)

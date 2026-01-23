@@ -99,6 +99,16 @@ bool x_window_supports_protocol(Display *display, Window window, Atom protocol);
 bool x_window_exists(Display *display, Window window);
 
 /**
+ * Converts a keysym to its corresponding X11 modifier mask.
+ *
+ * @param keysym The keysym to convert.
+ *
+ * @return - The modifier mask (ShiftMask, ControlMask, Mod1Mask, Mod4Mask).
+ * @return - `0` if the keysym is not a modifier key.
+ */
+unsigned int x_keysym_to_modifier(KeySym keysym);
+
+/**
  * Converts a key name to a key symbol.
  * 
  * @param name The string containing the key name.

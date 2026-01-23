@@ -2,7 +2,6 @@
 
 static int shortcut_input[MAX_SHORTCUT_KEYS] = {0};
 
-__attribute__((unused))
 static void clear_shortcut_input()
 {
     for (int i = 0; i < MAX_SHORTCUT_KEYS; i++)
@@ -66,6 +65,10 @@ static void check_shortcut_input()
         .type = ShortcutPressed,
         .name = shortcut_name
     });
+
+    // Clear the input buffer to prevent keys from getting "stuck" if release
+    // events are missed during focus changes.
+    clear_shortcut_input();
 }
 
 HANDLE(RawKeyPress)
