@@ -214,6 +214,14 @@ typedef struct {
 } PortalFocusedEvent;
 
 /**
+ * An event that gets triggered when the system theme changes.
+ */
+#define ThemeChanged 148
+typedef struct {
+    int type;
+} ThemeChangedEvent;
+
+/**
  * A union of all possible event types that can be handled by the window
  * manager.
  * 
@@ -228,6 +236,9 @@ typedef union {
     PrepareEvent prepare;
     InitializeEvent initialize;
     UpdateEvent update;
+
+    // System events.
+    ThemeChangedEvent theme_changed;
 
     // Portal events.
     PortalCreatedEvent portal_created;
@@ -254,38 +265,38 @@ typedef union {
 
     // Xlib events.
     XAnyEvent xany;
-	XKeyEvent xkey;
-	XButtonEvent xbutton;
-	XMotionEvent xmotion;
-	XCrossingEvent xcrossing;
-	XFocusChangeEvent xfocus;
-	XExposeEvent xexpose;
-	XGraphicsExposeEvent xgraphicsexpose;
-	XNoExposeEvent xnoexpose;
-	XVisibilityEvent xvisibility;
-	XCreateWindowEvent xcreatewindow;
-	XDestroyWindowEvent xdestroywindow;
-	XUnmapEvent xunmap;
-	XMapEvent xmap;
-	XMapRequestEvent xmaprequest;
-	XReparentEvent xreparent;
-	XConfigureEvent xconfigure;
-	XGravityEvent xgravity;
-	XResizeRequestEvent xresizerequest;
-	XConfigureRequestEvent xconfigurerequest;
-	XCirculateEvent xcirculate;
-	XCirculateRequestEvent xcirculaterequest;
-	XPropertyEvent xproperty;
-	XSelectionClearEvent xselectionclear;
-	XSelectionRequestEvent xselectionrequest;
-	XSelectionEvent xselection;
-	XColormapEvent xcolormap;
-	XClientMessageEvent xclient;
-	XMappingEvent xmapping;
-	XErrorEvent xerror;
-	XKeymapEvent xkeymap;
-	XGenericEvent xgeneric;
-	XGenericEventCookie xcookie;
+    XKeyEvent xkey;
+    XButtonEvent xbutton;
+    XMotionEvent xmotion;
+    XCrossingEvent xcrossing;
+    XFocusChangeEvent xfocus;
+    XExposeEvent xexpose;
+    XGraphicsExposeEvent xgraphicsexpose;
+    XNoExposeEvent xnoexpose;
+    XVisibilityEvent xvisibility;
+    XCreateWindowEvent xcreatewindow;
+    XDestroyWindowEvent xdestroywindow;
+    XUnmapEvent xunmap;
+    XMapEvent xmap;
+    XMapRequestEvent xmaprequest;
+    XReparentEvent xreparent;
+    XConfigureEvent xconfigure;
+    XGravityEvent xgravity;
+    XResizeRequestEvent xresizerequest;
+    XConfigureRequestEvent xconfigurerequest;
+    XCirculateEvent xcirculate;
+    XCirculateRequestEvent xcirculaterequest;
+    XPropertyEvent xproperty;
+    XSelectionClearEvent xselectionclear;
+    XSelectionRequestEvent xselectionrequest;
+    XSelectionEvent xselection;
+    XColormapEvent xcolormap;
+    XClientMessageEvent xclient;
+    XMappingEvent xmapping;
+    XErrorEvent xerror;
+    XKeymapEvent xkeymap;
+    XGenericEvent xgeneric;
+    XGenericEventCookie xcookie;
 } Event;
 
 /**

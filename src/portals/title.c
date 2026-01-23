@@ -12,11 +12,16 @@ static void set_portal_title(Portal *portal, const char *title)
 
 void draw_portal_title(Portal *portal)
 {
+    const Theme *theme = get_current_theme();
     cairo_t *cr = portal->frame_cr;
     unsigned int width = portal->width;
 
     // Set the font and color.
-    cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
+    cairo_set_source_rgb(cr,
+        theme->titlebar_text.r,
+        theme->titlebar_text.g,
+        theme->titlebar_text.b
+    );
     cairo_select_font_face(cr, "Sans", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
     cairo_set_font_size(cr, 10.0);
 

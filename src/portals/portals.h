@@ -11,7 +11,7 @@
 #define PORTAL_CORNER_RADIUS 6
 
 /** The minimum width of a portal in pixels. */
-#define MINIMUM_PORTAL_WIDTH 64
+#define MINIMUM_PORTAL_WIDTH 128
 
 /** The minimum height of a portal in pixels. */
 #define MINIMUM_PORTAL_HEIGHT 64

@@ -1,6 +1,7 @@
 CC = clang
-CFLAGS = -Wall -Wextra -g
-LIBS = -lX11 -lXcomposite -lXi -lXrandr -lXfixes -lcairo
+PKG_CONFIG = x11 xcomposite xi xrandr xfixes cairo dbus-1
+CFLAGS = -Wall -Wextra -g $(shell pkg-config --cflags $(PKG_CONFIG))
+LIBS = $(shell pkg-config --libs $(PKG_CONFIG))
 
 # Build Configuration
 
@@ -26,9 +27,19 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
+setup:
+	@echo "[" > compile_commands.json
+	@first=1; for src in $(SOURCES); do \
+		[ $$first -eq 0 ] && echo "," >> compile_commands.json; \
+		first=0; \
+		echo "{\"directory\":\"$(CURDIR)\",\"file\":\"$$src\",\"arguments\":[\"$(CC)\",$(foreach f,$(CFLAGS),\"$(f)\",)\"-c\",\"$$src\"]}" >> compile_commands.json; \
+	done
+	@echo "]" >> compile_commands.json
+	@echo "Generated compile_commands.json"
+
 clean:
 	rm -rf $(OBJDIR) $(BINDIR)
 
 # Special Directives
 
-.PHONY: all clean
+.PHONY: all clean setup

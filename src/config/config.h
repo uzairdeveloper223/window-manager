@@ -28,6 +28,42 @@
         CFG_KEY_FRAMERATE, \
         CFG_DEFAULT_FRAMERATE
 
+// Configuration field constants (theme).
+#define CFG_TYPE_THEME str
+#define CFG_KEY_THEME "theme"
+#define CFG_DEFAULT_THEME "listen"
+#define CFG_BUNDLE_THEME \
+        CFG_TYPE_THEME, \
+        CFG_KEY_THEME, \
+        CFG_DEFAULT_THEME
+
+// Configuration field constants (background_mode).
+#define CFG_TYPE_BACKGROUND_MODE str
+#define CFG_KEY_BACKGROUND_MODE "background_mode"
+#define CFG_DEFAULT_BACKGROUND_MODE "solid"
+#define CFG_BUNDLE_BACKGROUND_MODE \
+        CFG_TYPE_BACKGROUND_MODE, \
+        CFG_KEY_BACKGROUND_MODE, \
+        CFG_DEFAULT_BACKGROUND_MODE
+
+// Configuration field constants (background_color).
+#define CFG_TYPE_BACKGROUND_COLOR hex
+#define CFG_KEY_BACKGROUND_COLOR "background_color"
+#define CFG_DEFAULT_BACKGROUND_COLOR "0x1C1C1C"
+#define CFG_BUNDLE_BACKGROUND_COLOR \
+        CFG_TYPE_BACKGROUND_COLOR, \
+        CFG_KEY_BACKGROUND_COLOR, \
+        CFG_DEFAULT_BACKGROUND_COLOR
+
+// Configuration field constants (background_image_path).
+#define CFG_TYPE_BACKGROUND_IMAGE_PATH path
+#define CFG_KEY_BACKGROUND_IMAGE_PATH "background_image_path"
+#define CFG_DEFAULT_BACKGROUND_IMAGE_PATH "~/background.png"
+#define CFG_BUNDLE_BACKGROUND_IMAGE_PATH \
+        CFG_TYPE_BACKGROUND_IMAGE_PATH, \
+        CFG_KEY_BACKGROUND_IMAGE_PATH, \
+        CFG_DEFAULT_BACKGROUND_IMAGE_PATH
+
 // Configuration field constants (terminal_shortcut).
 #define CFG_TYPE_TERMINAL_SHORTCUT str
 #define CFG_KEY_TERMINAL_SHORTCUT "terminal_shortcut"
@@ -63,33 +99,6 @@
         CFG_TYPE_CLOSE_SHORTCUT, \
         CFG_KEY_CLOSE_SHORTCUT, \
         CFG_DEFAULT_CLOSE_SHORTCUT
-
-// Configuration field constants (background_mode).
-#define CFG_TYPE_BACKGROUND_MODE str
-#define CFG_KEY_BACKGROUND_MODE "background_mode"
-#define CFG_DEFAULT_BACKGROUND_MODE "solid"
-#define CFG_BUNDLE_BACKGROUND_MODE \
-        CFG_TYPE_BACKGROUND_MODE, \
-        CFG_KEY_BACKGROUND_MODE, \
-        CFG_DEFAULT_BACKGROUND_MODE
-
-// Configuration field constants (background_color).
-#define CFG_TYPE_BACKGROUND_COLOR hex
-#define CFG_KEY_BACKGROUND_COLOR "background_color"
-#define CFG_DEFAULT_BACKGROUND_COLOR "0x1C1C1C"
-#define CFG_BUNDLE_BACKGROUND_COLOR \
-        CFG_TYPE_BACKGROUND_COLOR, \
-        CFG_KEY_BACKGROUND_COLOR, \
-        CFG_DEFAULT_BACKGROUND_COLOR
-
-// Configuration field constants (background_image_path).
-#define CFG_TYPE_BACKGROUND_IMAGE_PATH path
-#define CFG_KEY_BACKGROUND_IMAGE_PATH "background_image_path"
-#define CFG_DEFAULT_BACKGROUND_IMAGE_PATH "~/background.png"
-#define CFG_BUNDLE_BACKGROUND_IMAGE_PATH \
-        CFG_TYPE_BACKGROUND_IMAGE_PATH, \
-        CFG_KEY_BACKGROUND_IMAGE_PATH, \
-        CFG_DEFAULT_BACKGROUND_IMAGE_PATH
 
 /**
  * Retrieves a configuration value from the loaded configuration entries.

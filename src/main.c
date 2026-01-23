@@ -7,6 +7,7 @@ static const char *libraries[] = {
     "libXrandr.so.2",
     "libXcomposite.so.1",
     "libcairo.so.2",
+    "libdbus-1.so.3",
 };
 
 static int custom_x_error_handler(Display *display, XErrorEvent *error)
@@ -30,7 +31,7 @@ static int custom_x_error_handler(Display *display, XErrorEvent *error)
 int main()
 {
     // Ensure the program isn't being run as root.
-    if(geteuid() == 0)
+    if (geteuid() == 0)
     {
         LOG_ERROR("Running as root is not secure.");
         exit(EXIT_FAILURE);
@@ -48,9 +49,9 @@ int main()
 
     // Ensure that the required libraries are available.
     const int library_count = sizeof(libraries) / sizeof(libraries[0]);
-    for(int i = 0; i < library_count; i++)
+    for (int i = 0; i < library_count; i++)
     {
-        if(!is_library_available(libraries[i]))
+        if (!is_library_available(libraries[i]))
         {
             LOG_ERROR("Missing library \"%s\".", libraries[i]);
             exit(EXIT_FAILURE);
@@ -59,7 +60,8 @@ int main()
 
     // Open the X11 display.
     Display *display = XOpenDisplay(NULL);
-    if (!display) {
+    if (!display)
+    {
         LOG_ERROR("Failed to open X11 display.");
         exit(EXIT_FAILURE);
     }

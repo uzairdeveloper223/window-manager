@@ -67,12 +67,12 @@ static float sample_client_luminance(Display *display, Pixmap pixmap, Portal *po
         XDestroyImage(img);
 
         // Extract RGB components.
-        unsigned char red = (pixel >> 16) & 0xFF;
-        unsigned char green = (pixel >> 8) & 0xFF;
-        unsigned char blue = pixel & 0xFF;
+        unsigned char r = (pixel >> 16) & 0xFF;
+        unsigned char g = (pixel >> 8) & 0xFF;
+        unsigned char b = pixel & 0xFF;
 
         // Calculate relative luminance using standard coefficients.
-        double luminance = (0.299 * red + 0.587 * green + 0.114 * blue) / 255.0;
+        double luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255.0;
         total_luminance += luminance;
         valid_samples++;
     }
@@ -88,6 +88,7 @@ static float sample_client_luminance(Display *display, Pixmap pixmap, Portal *po
 void draw_portal_border(cairo_t *cr, Portal *portal, Pixmap pixmap)
 {
     Display *display = DefaultDisplay;
+    const Theme *theme = get_current_theme();
 
     double x = portal->x_root;
     double y = portal->y_root;
@@ -99,8 +100,13 @@ void draw_portal_border(cairo_t *cr, Portal *portal, Pixmap pixmap)
     // Sample luminance to determine border colors.
     float luminance = sample_client_luminance(display, pixmap, portal);
 
-    // Draw inner border around title bar (always light against dark title bar).
-    cairo_set_source_rgba(cr, 1, 1, 1, 0.15);
+    // Draw inner border around title bar.
+    cairo_set_source_rgba(cr,
+        theme->titlebar_border.r,
+        theme->titlebar_border.g,
+        theme->titlebar_border.b,
+        theme->titlebar_border.a
+    );
     cairo_set_line_width(cr, 1);
     cairo_move_to(cr, x + 0.5, y + title_height);
     cairo_line_to(cr, x + 0.5, y + radius);
@@ -110,15 +116,15 @@ void draw_portal_border(cairo_t *cr, Portal *portal, Pixmap pixmap)
     cairo_line_to(cr, x + width - 0.5, y + title_height);
     cairo_stroke(cr);
 
-    // Draw inner border around client area (color based on content luminance).
-    if (luminance > 0.5f)
-    {
-        cairo_set_source_rgba(cr, 0, 0, 0, 0.25);
-    }
-    else
-    {
-        cairo_set_source_rgba(cr, 1, 1, 1, 0.15);
-    }
+    // Draw inner border around client area. Color contrasts with content,
+    // alpha matches the titlebar border.
+    double client_border_rgb = (luminance > 0.5f) ? 0.0 : 1.0;
+    cairo_set_source_rgba(cr,
+        client_border_rgb,
+        client_border_rgb,
+        client_border_rgb,
+        theme->titlebar_border.a
+    );
     cairo_set_line_width(cr, 1);
     cairo_move_to(cr, x + 0.5, y + title_height);
     cairo_line_to(cr, x + 0.5, y + height - radius);
@@ -128,15 +134,21 @@ void draw_portal_border(cairo_t *cr, Portal *portal, Pixmap pixmap)
     cairo_line_to(cr, x + width - 0.5, y + title_height);
     cairo_stroke(cr);
 
-    // Draw title bar separator/divider (color based on content luminance).
-    if (luminance > 0.5f)
+    // Draw title bar separator / divider. Alpha increases with title bar and
+    // content contrast so the separator remains visible at high-contrast
+    // boundaries.
+    ThemeColorRGB separator = theme->titlebar_separator;
+    bool high_contrast;
+    if (theme->variant == THEME_VARIANT_LIGHT)
     {
-        cairo_set_source_rgba(cr, 1, 1, 1, 0.5);
+        high_contrast = luminance <= 0.5f;
     }
     else
     {
-        cairo_set_source_rgba(cr, 1, 1, 1, 0.05);
+        high_contrast = luminance > 0.5f;
     }
+    double separator_a = high_contrast ? 0.5 : 0.05;
+    cairo_set_source_rgba(cr, separator.r, separator.g, separator.b, separator_a);
     cairo_set_line_width(cr, 1);
     cairo_move_to(cr, x, y + title_height - 0.5);
     cairo_line_to(cr, x + width, y + title_height - 0.5);

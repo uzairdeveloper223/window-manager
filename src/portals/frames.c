@@ -1,3 +1,8 @@
+/**
+ * This code is responsible for portal frame management.
+ * It handles creating, drawing, and destroying decorative frames for portals.
+ */
+
 #include "../all.h"
 
 bool should_portal_be_framed(Portal *portal)
@@ -102,6 +107,7 @@ void create_portal_frame(Portal *portal)
 
 void draw_portal_frame(Portal *portal)
 {
+    const Theme *theme = get_current_theme();
     cairo_t *cr = portal->frame_cr;
     unsigned int width = portal->width;
     unsigned int height = portal->height;
@@ -116,7 +122,7 @@ void draw_portal_frame(Portal *portal)
     cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
 
     // Draw title bar with rounded top corners.
-    cairo_set_source_rgb(cr, 0.141, 0.141, 0.141);
+    cairo_set_source_rgb(cr, theme->titlebar_bg.r, theme->titlebar_bg.g, theme->titlebar_bg.b);
     cairo_move_to(cr, radius, 0);
     cairo_line_to(cr, width - radius, 0);
     cairo_arc(cr, width - radius, radius, radius, -PI / 2, 0);
@@ -166,6 +172,22 @@ bool is_portal_frame_area(Portal *portal, int rel_x, int rel_y)
             rel_x < (int)portal->width &&
             rel_y >= 0 &&
             rel_y < PORTAL_TITLE_BAR_HEIGHT);
+}
+
+HANDLE(ThemeChanged)
+{
+    // Retrieve all portals from the registry.
+    unsigned int count;
+    Portal *portals = get_unsorted_portals(&count);
+
+    // Redraw each portal's frame.
+    for (unsigned int i = 0; i < count; i++)
+    {
+        if (is_portal_frame_valid(&portals[i]))
+        {
+            draw_portal_frame(&portals[i]);
+        }
+    }
 }
 
 HANDLE(Expose)

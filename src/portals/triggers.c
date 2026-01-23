@@ -1,8 +1,19 @@
+/**
+ * This code is responsible for portal trigger buttons.
+ *
+ * It handles rendering and interaction with title bar buttons such as
+ * close and arrange triggers.
+ */
+
 #include "../all.h"
 
+/** The size of a trigger button in pixels. */
 #define PORTAL_TRIGGER_SIZE 16
+
+/** The padding between trigger buttons in pixels. */
 #define PORTAL_TRIGGER_PADDING 6
 
+/** The size of the icon within a trigger button in pixels. */
 #define PORTAL_TRIGGER_ICON_SIZE 6
 
 typedef enum {
@@ -51,7 +62,12 @@ static void draw_portal_trigger(Portal *portal, PortalTriggerType type)
     calc_portal_trigger_pos(portal, type, &trigger_x, &trigger_y);
 
     // Define the drawing stroke style.
-    cairo_set_source_rgb(cr, 1, 1, 1);
+    const Theme *theme = get_current_theme();
+    cairo_set_source_rgb(cr,
+        theme->titlebar_text.r,
+        theme->titlebar_text.g,
+        theme->titlebar_text.b
+    );
 
     // Define the drawing path based on the trigger type.
     if (type == TRIGGER_CLOSE)
